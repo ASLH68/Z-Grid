@@ -1,9 +1,9 @@
 /*****************************************************************************
-// File Name :         SceneLoader.cs
+// File Name :         MainMenu.cs
 // Author :            Andrea Swihart-DeCoster
 // Creation Date :     February 12th, 2023
 //
-// Brief Description : This document controls the scene loading.
+// Brief Description : This document controls the main menu.
 *****************************************************************************/
 using System.Collections;
 using System.Collections.Generic;
