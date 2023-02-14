@@ -47,7 +47,21 @@ public class EnemyBehaviour : MonoBehaviour
     public void UpdatePath()
     {
         Vector3Int startPos = new Vector3Int(Mathf.RoundToInt(transform.position.x), 0, Mathf.RoundToInt(transform.position.z));
+
         Vector3Int endPos = new Vector3Int(MapManager.main.Width - 1, 0, MapManager.main.Height / 2);
+        /*
+        int shortestDistance = int.MaxValue;
+        for (int i = 0; i < MapManager.main.Height; i++)
+        {
+            Vector3Int tempEndPos = new Vector3Int(MapManager.main.Width - 1, 0, i);
+            List<Node> testPathfind = Pathfinder.Pathfind(startPos, tempEndPos, MapManager.main.MapData);
+            if (testPathfind.Count < shortestDistance)
+            {
+                shortestDistance = testPathfind.Count;
+                endPos = tempEndPos;
+            }
+        }
+        */
 
         if (startPos == endPos)
         {

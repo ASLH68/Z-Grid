@@ -157,6 +157,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyObj: {fileID: 9221855228132271997, guid: 44d55444a1e20f845b156ebadec0145f, type: 3}
+  _waves:
+  - enemyCount: 3
+    time: 10
+  - enemyCount: 5
+    time: 20
 --- !u!114 &39965230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db05de4dec12b324c94674d59a105710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 10
+  _width: 15
   _height: 8
   _gridSquareObj: {fileID: -2391968658557722413, guid: f1f73258e55cb4d458301fe8a0249986, type: 3}
 --- !u!4 &39965234
@@ -395,11 +400,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1574538131}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.60876137, y: 0, z: 0, w: 0.7933534}
+  m_LocalPosition: {x: 5, y: 10, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
