@@ -12,6 +12,10 @@ public class EnemyManager : MonoBehaviour
     private EnemyBehaviour _enemyObj;
     private List<EnemyBehaviour> _enemies;
 
+    [Header("Waves")]
+    [SerializeField]
+    private Wave[] _waves;
+
     private void Awake()
     {
         if (main == null)
@@ -28,6 +32,8 @@ public class EnemyManager : MonoBehaviour
     void Start()
     {
         _enemies = new();
+
+        StartCoroutine(SpawnWaves());
     }
 
     // Update is called once per frame
@@ -63,4 +69,24 @@ public class EnemyManager : MonoBehaviour
             curEnemy.UpdatePath();
         }
     }
+
+    private IEnumerator SpawnWaves()
+    {
+        foreach (Wave curWave in _waves)
+        {
+            for (int i = 0; i < curWave.enemyCount; i++)
+            {
+                SpawnEnemy();
+                yield return new WaitForSeconds(0.5f);
+            }
+            yield return new WaitForSeconds(curWave.time);
+        }
+    }
+}
+
+[System.Serializable]
+public struct Wave
+{
+    public int enemyCount;
+    public int time;
 }

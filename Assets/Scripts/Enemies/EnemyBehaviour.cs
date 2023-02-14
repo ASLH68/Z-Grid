@@ -18,16 +18,16 @@ public class EnemyBehaviour : MonoBehaviour
 
         _movePos = _positions[1];
 
-        StartCoroutine(MoveCoroutine());
+        //StartCoroutine(MoveCoroutine());
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Move();
-        //Vector3 direction = _movePos - transform.position;
+        Move();
+        Vector3 direction = _movePos - transform.position;
 
-        //_rb.velocity = direction.normalized;
+        _rb.velocity = direction.normalized;
     }
 
     private void Update()
@@ -47,7 +47,21 @@ public class EnemyBehaviour : MonoBehaviour
     public void UpdatePath()
     {
         Vector3Int startPos = new Vector3Int(Mathf.RoundToInt(transform.position.x), 0, Mathf.RoundToInt(transform.position.z));
+
         Vector3Int endPos = new Vector3Int(MapManager.main.Width - 1, 0, MapManager.main.Height / 2);
+        /*
+        int shortestDistance = int.MaxValue;
+        for (int i = 0; i < MapManager.main.Height; i++)
+        {
+            Vector3Int tempEndPos = new Vector3Int(MapManager.main.Width - 1, 0, i);
+            List<Node> testPathfind = Pathfinder.Pathfind(startPos, tempEndPos, MapManager.main.MapData);
+            if (testPathfind.Count < shortestDistance)
+            {
+                shortestDistance = testPathfind.Count;
+                endPos = tempEndPos;
+            }
+        }
+        */
 
         if (startPos == endPos)
         {
@@ -86,7 +100,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
         */
 
-        if (_movePos != null)
+        if (_movePos != null && _positions != null)
         {
             if (Vector3.Distance(transform.position, _movePos) < 1
             || _positions[1] == transform.position)
@@ -97,7 +111,7 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 _movePos = _positions[1];
             }
-        }            
+        }
     }
 
     public IEnumerator MoveCoroutine()
