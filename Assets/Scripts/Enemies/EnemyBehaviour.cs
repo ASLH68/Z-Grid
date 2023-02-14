@@ -18,16 +18,16 @@ public class EnemyBehaviour : MonoBehaviour
 
         _movePos = _positions[1];
 
-        StartCoroutine(MoveCoroutine());
+        //StartCoroutine(MoveCoroutine());
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Move();
-        //Vector3 direction = _movePos - transform.position;
+        Move();
+        Vector3 direction = _movePos - transform.position;
 
-        //_rb.velocity = direction.normalized;
+        _rb.velocity = direction.normalized;
     }
 
     private void Update()
@@ -86,7 +86,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
         */
 
-        if (_movePos != null)
+        if (_movePos != null && _positions != null)
         {
             if (Vector3.Distance(transform.position, _movePos) < 1
             || _positions[1] == transform.position)
@@ -97,7 +97,7 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 _movePos = _positions[1];
             }
-        }            
+        }
     }
 
     public IEnumerator MoveCoroutine()

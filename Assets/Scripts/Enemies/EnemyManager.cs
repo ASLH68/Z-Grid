@@ -64,3 +64,9 @@ public class EnemyManager : MonoBehaviour
         }
     }
 }
+
+[System.Serializable]
+public struct Wave
+{
+    public int enemyCount;
+}
