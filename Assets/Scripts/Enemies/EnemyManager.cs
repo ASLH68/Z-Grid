@@ -16,6 +16,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private Wave[] _waves;
 
+    [SerializeField] private Transform _enemiesParent;
+
     private void Awake()
     {
         if (main == null)
