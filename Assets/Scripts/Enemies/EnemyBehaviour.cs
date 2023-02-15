@@ -127,7 +127,7 @@ public class EnemyBehaviour : MonoBehaviour
         _health -= damageAmount;
         if (_health <= 0)
         {
-            PlayerManager.main.ModifyCurrency(50);
+            PlayerManager.main.ModifyCurrency(25);
             Destroy(gameObject);
         }
     }
