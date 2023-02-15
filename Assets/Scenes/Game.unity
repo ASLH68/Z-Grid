@@ -878,7 +878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72446fb6f58e249419f4e193a713e641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currencyAmount: 3000
+  _currencyAmount: 250
   _health: 0
   _maxHealth: 20
   _rounds:
