@@ -574,6 +574,7 @@ MonoBehaviour:
   _mapParent: {fileID: 966597586}
   _wallPrefab: {fileID: 1972211626219385172, guid: fd98920ea76d89a45972c5e1999cb2fe, type: 3}
   _lvl1Walls: {fileID: 370135730}
+  _wallSpawnPointsLvl1: []
 --- !u!4 &387982665
 Transform:
   m_ObjectHideFlags: 0
@@ -601,6 +602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72446fb6f58e249419f4e193a713e641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currecyAmount: 1000
 --- !u!114 &387982667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,7 +619,7 @@ MonoBehaviour:
   _wallObj: {fileID: 1972211626219385179, guid: fd98920ea76d89a45972c5e1999cb2fe, type: 3}
   _turretObj: {fileID: 0}
   _wallCost: 300
-  _turretCost: 600
+  _turretCost: 500
   _currentBuilding: 0
 --- !u!114 &387982668
 MonoBehaviour:

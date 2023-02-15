@@ -20,7 +20,7 @@ public class MapManager : MonoBehaviour
     [Header("Walls")]
     [SerializeField] private GameObject _wallPrefab;
     [SerializeField] private Transform _lvl1Walls;
-    private Transform[] _wallSpawnPointsLvl1;
+    [HideInInspector] public Transform[] _wallSpawnPointsLvl1;
     
 
     public int Width => _width;
@@ -61,24 +61,6 @@ public class MapManager : MonoBehaviour
 
                 _mapData[x, y] = 0;
             }
-        }
-        SpawnWalls();
-    }
-
-    /// <summary>
-    /// Spawnws walls at each spawn point
-    /// </summary>
-    public void SpawnWalls()
-    {
-        int numWalls = 0; // prevents wall from spawning at location of parent game obj
-        foreach(Transform t in _wallSpawnPointsLvl1)
-        {
-            if (numWalls != 0)
-            {
-                GameObject newWall = Instantiate(_wallPrefab, t);
-                newWall.transform.SetParent(_lvl1Walls);
-            }
-            numWalls++;
         }
     }
 

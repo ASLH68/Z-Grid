@@ -37,4 +37,12 @@ public class CanvasManager : MonoBehaviour
     {
         BuildingManager.main.SetCurrentBuilding(newBuilding);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void TempButton()
+    {
+        GameManager.main.EndRound1();
+    }
 }

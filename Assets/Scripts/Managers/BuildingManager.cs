@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -47,8 +48,27 @@ public class BuildingManager : MonoBehaviour
         //Creates an empty list of the buildings to be creates
         _buildings = new();
         SetCurrentBuilding("wall");
+        SpawnWalls();
     }
 
+    public void SpawnWalls()
+    {
+        int numWalls = 0; // prevents wall from spawning at location of parent game obj
+        foreach (Transform t in MapManager.main._wallSpawnPointsLvl1)
+        {
+            if (numWalls != 0)
+            {
+                _buildings.Add(Instantiate(_wallObj, t));
+            }
+            numWalls++;
+
+            //Edits the map
+            MapManager.main.EditGrid(Mathf.RoundToInt(t.transform.position.x), Mathf.RoundToInt(t.transform.position.z), -1);
+
+            //Edits the pathing of all visible enemies
+            EnemyManager.main.UpdatePaths();
+        }
+    }
 
     /// <summary>
     /// Instantiates a new building with BuildingBehaviour at index (x,y), and changes MapData to cpmensate for it
@@ -112,6 +132,22 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Destroys all building on the map
+    /// </summary>
+    public void DestroyAllBuildings()
+    {
+        foreach (BuildingBehaviour curBehaviour in _buildings.ToArray())
+        {
+            //Edits the grid and removes the building
+            DestroyBuilding(Mathf.RoundToInt(curBehaviour.transform.position.x), Mathf.RoundToInt(curBehaviour.transform.position.z));   
+        }
+    }
+
+    /// <summary>
+    /// Sets the current building to newBuilding
+    /// </summary>
+    /// <param name="newBuilding"></param>
     public void SetCurrentBuilding(string newBuilding)
     {
         switch (newBuilding)
