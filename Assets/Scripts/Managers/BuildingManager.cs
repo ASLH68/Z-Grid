@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
@@ -10,9 +11,23 @@ public class BuildingManager : MonoBehaviour
     [Header("Buildings")]
     private List<BuildingBehaviour> _buildings;
     [SerializeField]
-    private BuildingBehaviour _buildingObj;
-    [SerializeField]
     private Vector3 _offset;
+    [SerializeField] BuildingBehaviour _wallObj;
+    [SerializeField] BuildingBehaviour _turretObj;
+
+    [Header("Building Costs")]
+    [SerializeField] private int _wallCost;
+    [SerializeField] private int _turretCost;
+
+    public int WallCost => _wallCost;
+    public int TurretCost => _turretCost;
+    public enum BuildingType
+    {
+        wall,
+        turret
+    }
+
+    public BuildingType _currentBuilding;
 
     //Ignore, for script management
     private void Awake()
@@ -31,7 +46,9 @@ public class BuildingManager : MonoBehaviour
     {
         //Creates an empty list of the buildings to be creates
         _buildings = new();
+        SetCurrentBuilding("wall");
     }
+
 
     /// <summary>
     /// Instantiates a new building with BuildingBehaviour at index (x,y), and changes MapData to cpmensate for it
@@ -40,15 +57,39 @@ public class BuildingManager : MonoBehaviour
     /// <param name="y"></param>
     public void CreateBuilding(int x, int y)
     {
-        //Creates the new building object
-        transform.position = new Vector3(x, 0, y) + _offset;
-        _buildings.Add(Instantiate(_buildingObj, transform.position, Quaternion.identity));
+        switch(_currentBuilding)
+        {
+            //Creates the new wall object
+            case BuildingType.wall:
+                transform.position = new Vector3(x, 0, y) + _offset;
+                if (PlayerManager.main.HasEnoughCurrency(_wallCost))
+                {
+                    _buildings.Add(Instantiate(_wallObj, transform.position, Quaternion.identity));
+                    PlayerManager.main.ModifyCurrency(-_wallCost);
 
-        //Edits the map
-        MapManager.main.EditGrid(x, y, -1);
+                    //Edits the map
+                    MapManager.main.EditGrid(x, y, -1);
 
-        //Edits the pathing of all visible enemies
-        EnemyManager.main.UpdatePaths();
+                    //Edits the pathing of all visible enemies
+                    EnemyManager.main.UpdatePaths();
+                }
+                break;
+            //Creates a new turret obj
+            case BuildingType.turret:
+                transform.position = new Vector3(x, 0, y) + _offset;
+                if (PlayerManager.main.HasEnoughCurrency(_turretCost))
+                {
+                    _buildings.Add(Instantiate(_turretObj, transform.position, Quaternion.identity));
+                    PlayerManager.main.ModifyCurrency(-_turretCost);
+
+                    //Edits the map
+                    MapManager.main.EditGrid(x, y, -1);
+
+                    //Edits the pathing of all visible enemies
+                    EnemyManager.main.UpdatePaths();
+                }
+                break;
+        }       
     }
 
     /// <summary>
@@ -68,6 +109,19 @@ public class BuildingManager : MonoBehaviour
                 Destroy(curBehaviour.gameObject);
                 _buildings.Remove(curBehaviour);
             }
+        }
+    }
+
+    public void SetCurrentBuilding(string newBuilding)
+    {
+        switch (newBuilding)
+        {
+            case "wall":
+                _currentBuilding = BuildingType.wall;
+                break;
+            case "turret":
+                _currentBuilding = BuildingType.turret;
+                break;
         }
     }
 }
