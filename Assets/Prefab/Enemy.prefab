@@ -103,6 +103,8 @@ MonoBehaviour:
   _collisionMask:
     serializedVersion: 2
     m_Bits: 128
+  _baseMat: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  _dmgMat: {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
 --- !u!54 &4694230131064877773
 Rigidbody:
   m_ObjectHideFlags: 0

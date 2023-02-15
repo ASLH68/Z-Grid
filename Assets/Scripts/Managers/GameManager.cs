@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         _health -= value;
         if (_health <= 0)
         {
-            SceneManager.LoadScene("EndGame");
+            SceneManager.LoadScene("End Game");
         }
     }
 
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndRound1()
     {
-        BuildingManager.main.DestroyAllBuildings();
+        //BuildingManager.main.DestroyAllBuildings();
         PlayerManager.main.ModifyCurrency(_currencyAmount);
     }
 

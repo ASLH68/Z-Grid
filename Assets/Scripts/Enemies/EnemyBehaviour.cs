@@ -20,6 +20,11 @@ public class EnemyBehaviour : MonoBehaviour
     private LayerMask _collisionMask;
     private MoveMode _mode;
 
+    [SerializeField]
+    private Material _baseMat;
+    [SerializeField]
+    private Material _dmgMat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -134,12 +139,20 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void TakeDamage(int damageAmount)
     {
+        StartCoroutine(DamageFlash());
         _health -= damageAmount;
         if (_health <= 0)
         {
             PlayerManager.main.ModifyCurrency(50);
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator DamageFlash()
+    {
+        GetComponent<Renderer>().material = _dmgMat;
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<Renderer>().material = _baseMat;
     }
 
     /*
