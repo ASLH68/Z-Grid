@@ -65,7 +65,7 @@ public class CanvasManager : MonoBehaviour
 
     public void UpdateRoundText()
     {
-        _buildingUIText.text = "Round " + GameManager.main.CurrentRound;
+        _roundUIText.text = "Round " + GameManager.main.CurrentRound;
     }
 
     /// <summary>
