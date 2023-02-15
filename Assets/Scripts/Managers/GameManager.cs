@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private Round[] _rounds;
 
     public int Health => _health;
+    public int CurrentRound => _currentRound;
 
     private void Awake()
     {
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
     private void IncreaseRound()
     {
         _currentRound++;
+        CanvasManager.main.UpdateRoundText();
     }
 
     public IEnumerator RoundProgression()

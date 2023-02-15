@@ -14,6 +14,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _buildingUIText;
     [SerializeField] private TextMeshProUGUI _wallCostText;
     [SerializeField] private TextMeshProUGUI _turretCostText;
+    [SerializeField] private TextMeshProUGUI _roundUIText;
 
     private void Awake()
     {
@@ -60,6 +61,11 @@ public class CanvasManager : MonoBehaviour
     public void UpdateBuildingText()
     {
         _buildingUIText.text = BuildingManager.main._currentBuilding.ToString();
+    }
+
+    public void UpdateRoundText()
+    {
+        _buildingUIText.text = "Round " + GameManager.main.CurrentRound;
     }
 
     /// <summary>
