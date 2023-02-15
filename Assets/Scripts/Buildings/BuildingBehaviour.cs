@@ -16,6 +16,9 @@ public class BuildingBehaviour : MonoBehaviour
     [SerializeField]
     private float _radius;
 
+    [SerializeField]
+    private Material _buildingMat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,12 @@ public class BuildingBehaviour : MonoBehaviour
     public bool TakeDamage()
     {
         _health--;
+
+        float damageRatio = (float)_health / (float)_maxHealth;
+        Material brokenMat = new Material(_buildingMat);
+        brokenMat.color *= 0.25f;
+
+        GetComponent<Renderer>().material.color = _buildingMat.color * damageRatio + brokenMat.color * (1 - damageRatio);
         if (_health <= 0)
         {
             return true;
@@ -56,7 +65,7 @@ public class BuildingBehaviour : MonoBehaviour
 
         if (farthest != null)
         {
-            farthest.GetComponent<EnemyBehaviour>().TakeDamage(10);
+            farthest.GetComponent<EnemyBehaviour>().TakeDamage(25);
             yield return new WaitForSeconds(_attackCooldown);
         }
 

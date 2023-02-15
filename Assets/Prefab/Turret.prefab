@@ -106,6 +106,7 @@ MonoBehaviour:
   _maxHealth: 5000
   _attackCooldown: 1
   _radius: 4
+  _buildingMat: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!65 &2726651816852995823
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -53,22 +53,6 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)
-            && transform.position.z > 10)
-        {
-            string path = "";
-
-            foreach (Vector3 curPos in _positions)
-            {
-                path += curPos + ", ";
-            }
-
-            print(path);
-        }
-    }
-
     public void UpdatePath()
     {
         Vector3Int startPos = new Vector3Int(Mathf.RoundToInt(transform.position.x), 0, Mathf.RoundToInt(transform.position.z));
