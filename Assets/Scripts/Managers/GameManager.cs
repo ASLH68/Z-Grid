@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Round[] _rounds;
 
+    public int Health => _health;
+
     private void Awake()
     {
         if (main == null)
@@ -42,10 +44,13 @@ public class GameManager : MonoBehaviour
 
         EnemyManager.main.StartRound(_rounds[0]);
         StartCoroutine(RoundProgression());
+
+        CanvasManager.main.UpdateLivesText();
     }
 
     public void LoseLife(int value)
     {
+        CanvasManager.main.UpdateLivesText();
         _health -= value;
         if (_health <= 0)
         {

@@ -5,16 +5,35 @@ using UnityEngine;
 
 public class CanvasManager : MonoBehaviour
 {
+    [Header("Static")]
+    public static CanvasManager main;
+
     [Header("Currency")]
     [SerializeField] private TextMeshProUGUI _currencyUIText;
+    [SerializeField] private TextMeshProUGUI _livesUIText;
     [SerializeField] private TextMeshProUGUI _wallCostText;
     [SerializeField] private TextMeshProUGUI _turretCostText;
+
+    private void Awake()
+    {
+        if (main == null)
+        {
+            main = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     private void Start()
     {
         SetCosts();
     }
 
+    /// <summary>
+    /// Sets the costs of the different buildings
+    /// </summary>
     private void SetCosts()
     {
         _wallCostText.text = "$" + BuildingManager.main.WallCost;
@@ -30,19 +49,19 @@ public class CanvasManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Updates the lives amount text
+    /// </summary>
+    public void UpdateLivesText()
+    {
+        _livesUIText.text = GameManager.main.Health + " Lives";
+    }
+
+    /// <summary>
     /// Sets the current building to newBuilding
     /// </summary>
     /// <param name="newBuilding">name of new building type </param>
     public void SetCurrentBuilding(string newBuilding)
     {
         BuildingManager.main.SetCurrentBuilding(newBuilding);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public void TempButton()
-    {
-        GameManager.main.EndRound1();
     }
 }
