@@ -42,7 +42,7 @@ public class EndGameMenu : MonoBehaviour
     /// </summary>
     public void ReturnToMenu()
     {
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene("Start");
     }
 
     /// <summary>
