@@ -176,5 +176,6 @@ public class BuildingManager : MonoBehaviour
                 _currentBuilding = BuildingType.turret;
                 break;
         }
+        CanvasManager.main.UpdateBuildingText();
     }
 }

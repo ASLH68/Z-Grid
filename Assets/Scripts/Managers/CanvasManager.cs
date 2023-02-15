@@ -11,6 +11,7 @@ public class CanvasManager : MonoBehaviour
     [Header("Currency")]
     [SerializeField] private TextMeshProUGUI _currencyUIText;
     [SerializeField] private TextMeshProUGUI _livesUIText;
+    [SerializeField] private TextMeshProUGUI _buildingUIText;
     [SerializeField] private TextMeshProUGUI _wallCostText;
     [SerializeField] private TextMeshProUGUI _turretCostText;
 
@@ -54,6 +55,11 @@ public class CanvasManager : MonoBehaviour
     public void UpdateLivesText()
     {
         _livesUIText.text = GameManager.main.Health + " Lives";
+    }
+
+    public void UpdateBuildingText()
+    {
+        _buildingUIText.text = BuildingManager.main._currentBuilding.ToString();
     }
 
     /// <summary>
