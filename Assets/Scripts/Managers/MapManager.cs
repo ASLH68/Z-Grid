@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class MapManager : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class MapManager : MonoBehaviour
     private void Start()
     {
         _wallSpawnPointsLvl1 = GameObject.Find("WallSpawnPointsLvl1").GetComponentsInChildren<Transform>();
-            }
+    }
 
     public void CreateMap()
     {

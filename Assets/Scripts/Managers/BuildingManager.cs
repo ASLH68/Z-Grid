@@ -77,7 +77,7 @@ public class BuildingManager : MonoBehaviour
     /// <param name="y"></param>
     public void CreateBuilding(int x, int y)
     {
-        switch(_currentBuilding)
+        switch (_currentBuilding)
         {
             //Creates the new wall object
             case BuildingType.wall:
@@ -88,7 +88,7 @@ public class BuildingManager : MonoBehaviour
                     PlayerManager.main.ModifyCurrency(-_wallCost);
 
                     //Edits the map
-                    MapManager.main.EditGrid(x, y, -1);
+                    MapManager.main.EditGrid(x, y, 25);
 
                     //Edits the pathing of all visible enemies
                     EnemyManager.main.UpdatePaths();
@@ -103,13 +103,28 @@ public class BuildingManager : MonoBehaviour
                     PlayerManager.main.ModifyCurrency(-_turretCost);
 
                     //Edits the map
-                    MapManager.main.EditGrid(x, y, -1);
+                    MapManager.main.EditGrid(x, y, 75);
 
                     //Edits the pathing of all visible enemies
                     EnemyManager.main.UpdatePaths();
                 }
                 break;
-        }       
+        }
+    }
+
+    public void DamageBuilding(int x, int y)
+    {
+        //Find the building at the location of (x,y)
+        foreach (BuildingBehaviour curBehaviour in _buildings.ToArray())
+        {
+            if (Mathf.RoundToInt(curBehaviour.transform.position.x) == x && Mathf.RoundToInt(curBehaviour.transform.position.z) == y)
+            {
+                if (curBehaviour.TakeDamage())
+                {
+                    DestroyBuilding(x, y);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -130,6 +145,8 @@ public class BuildingManager : MonoBehaviour
                 _buildings.Remove(curBehaviour);
             }
         }
+
+        EnemyManager.main.UpdatePaths();
     }
 
     /// <summary>

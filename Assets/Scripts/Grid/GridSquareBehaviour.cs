@@ -20,9 +20,12 @@ public class GridSquareBehaviour : MonoBehaviour
         if (!_occupied)
         {
             Vector2Int gridSquarePos = new(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
-            _manager.EditGrid(gridSquarePos.x, gridSquarePos.y, -1);
-            BuildingManager.main.CreateBuilding(gridSquarePos.x, gridSquarePos.y);
-            _occupied = true;
+            if (gridSquarePos.x >= 1/* && MapManager.main.CanReach(gridSquarePos.x, gridSquarePos.y)*/)
+            {
+                _manager.EditGrid(gridSquarePos.x, gridSquarePos.y, -1);
+                BuildingManager.main.CreateBuilding(gridSquarePos.x, gridSquarePos.y);
+                _occupied = true;
+            }
         }
         else
         {

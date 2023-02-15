@@ -15,22 +15,27 @@ namespace Pathfinding
         };
 
         // Update is called once per frame
-        public static List<Node> Pathfind(Vector3Int startPos, Vector3Int endPos, int[,] mapData)
+        public static List<Node> Pathfind(Vector3Int startPos, Vector3Int endPos, int[,] mapData, bool allowDestroyWalls)
         {
             List<Node> openNodes = new();
             List<Node> solvedNodes = new();
 
-            Node activeNode = new(startPos, endPos);
+            Node activeNode = new(startPos, endPos, mapData/*null*/, allowDestroyWalls);
             openNodes.Add(activeNode);
 
             while (activeNode.Position != endPos)
             {
                 foreach (Vector3Int curDir in _NEARBYDIRS)
                 {
+                    Vector3Int nextPos = activeNode.Position + curDir;
+
                     if (!(curDir.x == 0 && curDir.z == 0)
-                        && InBounds(activeNode.Position + curDir, mapData))
+                        && InBounds(nextPos, mapData))
                     {
-                        Node newNode = new(activeNode.Position + curDir, endPos, activeNode);
+                        //Debug.Log("Checking tile " + nextPos);
+
+                        //Debug.Log(nextPos + " has a value of " + mapData[nextPos.x, nextPos.z]);
+                        Node newNode = new(nextPos, endPos, mapData/*null*/, allowDestroyWalls, activeNode);
 
                         bool addToOpenNodes = true;
                         foreach (Node curNode in solvedNodes)
@@ -39,14 +44,17 @@ namespace Pathfinding
                             {
                                 curNode.SimplifyAgainstNode(newNode);
                                 addToOpenNodes = false;
+                                //Debug.Log("Simplified " + newNode.Position + " to " + newNode.FCost);
                             }
                         }
 
                         if (addToOpenNodes)
                         {
-                            if (mapData[(activeNode.Position + curDir).x, (activeNode.Position + curDir).z] == 0)
+                            if ((allowDestroyWalls && mapData[nextPos.x, nextPos.z] >= 0)
+                                || (!allowDestroyWalls && mapData[nextPos.x, nextPos.z] == 0))
                             {
                                 openNodes.Add(newNode);
+                                //Debug.Log("Added " + newNode.Position + " to open nodes with a cost of " + newNode.FCost + "");
                             }
                         }
                     }
@@ -55,12 +63,13 @@ namespace Pathfinding
                 openNodes.Remove(activeNode);
 
                 if (openNodes.Count == 0
-                    || openNodes.Count > 1000)
+                    || openNodes.Count > 600)
                 {
                     break;
                 }
 
                 activeNode = FindOptimalNode(openNodes);
+                //Debug.Log("Found optimal node at " + activeNode.Position + " with a cost of " + activeNode.FCost);
 
                 if (activeNode.Position == endPos)
                 {
@@ -105,7 +114,7 @@ namespace Pathfinding
                     }
                 }
             }
-
+            
             activeNode = optimalNode;
             return activeNode;
         }

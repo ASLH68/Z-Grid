@@ -12,10 +12,6 @@ public class EnemyManager : MonoBehaviour
     private EnemyBehaviour _enemyObj;
     private List<EnemyBehaviour> _enemies;
 
-    [Header("Waves")]
-    [SerializeField]
-    private Wave[] _waves;
-
     [SerializeField] private Transform _enemiesParent;
 
     private void Awake()
@@ -34,8 +30,6 @@ public class EnemyManager : MonoBehaviour
     void Start()
     {
         _enemies = new();
-
-        StartCoroutine(SpawnWaves());
     }
 
     // Update is called once per frame
@@ -54,27 +48,37 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public void StartRound(Round round)
+    {
+        StartCoroutine(SpawnWaves(round));
+    }
 
     public void SpawnEnemy()
     {
         int width = MapManager.main.Width;
         int height = MapManager.main.Height;
 
-        transform.position = new Vector3(0, 0.5f, Random.Range(0, height));
-        _enemies.Add(Instantiate(_enemyObj, transform.position, Quaternion.identity));
+        transform.position = new Vector3(0, 0.5f, /*13*/Random.Range(0, height));
+        if (_enemies != null)
+        {
+            _enemies.Add(Instantiate(_enemyObj, transform.position, Quaternion.identity));
+        }
     }
 
     public void UpdatePaths()
     {
         foreach (EnemyBehaviour curEnemy in _enemies)
         {
-            curEnemy.UpdatePath();
+            if (curEnemy != null)
+            {
+                curEnemy.UpdatePath();
+            }
         }
     }
 
-    private IEnumerator SpawnWaves()
+    private IEnumerator SpawnWaves(Round round)
     {
-        foreach (Wave curWave in _waves)
+        foreach (Wave curWave in round.waves)
         {
             for (int i = 0; i < curWave.enemyCount; i++)
             {
@@ -84,11 +88,21 @@ public class EnemyManager : MonoBehaviour
             yield return new WaitForSeconds(curWave.time);
         }
     }
-}
 
-[System.Serializable]
-public struct Wave
-{
-    public int enemyCount;
-    public int time;
+    public bool AnyEnemiesLeft()
+    {
+        if (_enemies == null)
+        {
+            return true;
+        }
+        foreach(EnemyBehaviour curEnemy in _enemies.ToArray())
+        {
+            if (curEnemy == null)
+            {
+                _enemies.Remove(curEnemy);
+            }
+        }
+
+        return _enemies.Count != 0;
+    }
 }
