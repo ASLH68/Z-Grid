@@ -63,32 +63,39 @@ public class BuildingBehaviour : MonoBehaviour
 
         foreach (Collider curObj in collidersInRadius)
         {
-            switch (_type)
+            if (target == null)
             {
-                case AttackType.Close:
-                    if (Vector3.Distance(curObj.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
-                    {
-                        target = curObj.transform;
-                    }
-                    break;
-                case AttackType.Farthest:
-                    if (target == null || target.position.x < curObj.transform.position.x)
-                    {
-                        target = curObj.transform;
-                    }
-                    break;
-                case AttackType.Earliest:
-                    if (target == null || target.position.x > curObj.transform.position.x)
-                    {
-                        target = curObj.transform;
-                    }
-                    break;
-                case AttackType.Healthiest:
-                    if (target == null || target.GetComponent<EnemyBehaviour>().Health > curObj.transform.GetComponent<EnemyBehaviour>().Health)
-                    {
-                        target = curObj.transform;
-                    }
-                    break;
+                target = curObj.transform;
+            }
+            else
+            {
+                switch (_type)
+                {
+                    case AttackType.Close:
+                        if (Vector3.Distance(curObj.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
+                        {
+                            target = curObj.transform;
+                        }
+                        break;
+                    case AttackType.Farthest:
+                        if (target == null || target.position.x < curObj.transform.position.x)
+                        {
+                            target = curObj.transform;
+                        }
+                        break;
+                    case AttackType.Earliest:
+                        if (target == null || target.position.x > curObj.transform.position.x)
+                        {
+                            target = curObj.transform;
+                        }
+                        break;
+                    case AttackType.Healthiest:
+                        if (target == null || target.GetComponent<EnemyBehaviour>().Health > curObj.transform.GetComponent<EnemyBehaviour>().Health)
+                        {
+                            target = curObj.transform;
+                        }
+                        break;
+                }
             }
         }
 
