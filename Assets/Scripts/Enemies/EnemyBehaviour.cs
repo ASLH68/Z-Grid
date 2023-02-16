@@ -19,6 +19,8 @@ public class EnemyBehaviour : MonoBehaviour
     private int _maxHealth;
     private int _health;
     [SerializeField]
+    private int _moneyAmount;
+    [SerializeField]
     private float _speed;
     [SerializeField]
     private int _damage;
@@ -38,6 +40,8 @@ public class EnemyBehaviour : MonoBehaviour
     private Material _baseMat;
     [SerializeField]
     private Material _dmgMat;
+
+    public int Health => _health;
 
     // Start is called before the first frame update
     void Start()
@@ -189,7 +193,7 @@ public class EnemyBehaviour : MonoBehaviour
         _health -= damageAmount;
         if (_health <= 0)
         {
-            PlayerManager.main.ModifyCurrency(25);
+            PlayerManager.main.ModifyCurrency(_moneyAmount);
             Destroy(gameObject);
         }
     }

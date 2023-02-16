@@ -99,9 +99,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _positions: []
-  _whatAmIDoing: 
   _movePos: {x: 0, y: 0, z: 0}
   _maxHealth: 100
+  _moneyAmount: 50
   _speed: 2
   _damage: 1
   _sightRange: 5

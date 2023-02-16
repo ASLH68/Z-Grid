@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class BuildingBehaviour : MonoBehaviour
 {
+    private enum AttackType { Close, Farthest, Earliest, Healthiest, All, None }
+
     [SerializeField]
     private LayerMask _enemyMask;
 
-    [SerializeField]
-    private int _health;
+    [Header("Building Stats")]
     [SerializeField]
     private int _maxHealth;
+    private int _health;
     [SerializeField]
-    private float _attackCooldown;
+    private int _damage;
     [SerializeField]
     private float _radius;
+    [SerializeField]
+    private AttackType _type;
+    [SerializeField]
+    private float _attackCooldown;
 
     [SerializeField]
     private Material _buildingMat;
@@ -53,21 +59,44 @@ public class BuildingBehaviour : MonoBehaviour
     {
         Collider[] collidersInRadius = Physics.OverlapSphere(transform.position, _radius, _enemyMask);
 
-        Transform farthest = null;
+        Transform target = null;
 
         foreach (Collider curObj in collidersInRadius)
         {
-            if (farthest == null || farthest.position.x < curObj.transform.position.x)
+            switch (_type)
             {
-                farthest = curObj.transform;
+                case AttackType.Close:
+                    if (Vector3.Distance(curObj.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
+                    {
+                        target = curObj.transform;
+                    }
+                    break;
+                case AttackType.Farthest:
+                    if (target == null || target.position.x < curObj.transform.position.x)
+                    {
+                        target = curObj.transform;
+                    }
+                    break;
+                case AttackType.Earliest:
+                    if (target == null || target.position.x > curObj.transform.position.x)
+                    {
+                        target = curObj.transform;
+                    }
+                    break;
+                case AttackType.Healthiest:
+                    if (target == null || target.GetComponent<EnemyBehaviour>().Health > curObj.transform.GetComponent<EnemyBehaviour>().Health)
+                    {
+                        target = curObj.transform;
+                    }
+                    break;
             }
         }
 
-        if (farthest != null)
+        if (target != null)
         {
-            farthest.GetComponent<EnemyBehaviour>().TakeDamage(25);
+            target.GetComponent<EnemyBehaviour>().TakeDamage(_damage);
             yield return new WaitForSeconds(_attackCooldown);
-        }
+        }        
 
         yield return null;
         StartCoroutine(Attack());
