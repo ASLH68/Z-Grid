@@ -51,8 +51,8 @@ public class GameManager : MonoBehaviour
 
     public void LoseLife(int value)
     {
-        CanvasManager.main.UpdateLivesText();
         _health -= value;
+        CanvasManager.main.UpdateLivesText();
         if (_health <= 0)
         {
             SceneManager.LoadScene("End Game");
