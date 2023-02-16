@@ -63,7 +63,7 @@ public class BuildingManager : MonoBehaviour
             numWalls++;
 
             //Edits the map
-            MapManager.main.EditGrid(Mathf.RoundToInt(t.transform.position.x), Mathf.RoundToInt(t.transform.position.z), -1);
+            MapManager.main.EditGrid(Mathf.RoundToInt(t.transform.position.x), Mathf.RoundToInt(t.transform.position.z), 100);
 
             //Edits the pathing of all visible enemies
             EnemyManager.main.UpdatePaths(true);

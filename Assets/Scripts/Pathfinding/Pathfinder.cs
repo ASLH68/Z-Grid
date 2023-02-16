@@ -15,7 +15,7 @@ namespace Pathfinding
         };
 
         // Update is called once per frame
-        public static List<Node> Pathfind(Vector3Int startPos, Vector3Int endPos, int[,] mapData, bool allowDestroyWalls)
+        public static List<Node> Pathfind(Vector3Int startPos, Vector3Int endPos, int[,] mapData, bool allowDestroyWalls, int intelligence)
         {
             List<Node> openNodes = new();
             List<Node> solvedNodes = new();
@@ -63,7 +63,7 @@ namespace Pathfinding
                 openNodes.Remove(activeNode);
 
                 if (openNodes.Count == 0
-                    || openNodes.Count > 350)
+                    || openNodes.Count > Mathf.Max(intelligence, 50))
                 {
                     break;
                 }

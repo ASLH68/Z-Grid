@@ -9,7 +9,12 @@ public class EnemyBehaviour : MonoBehaviour
 
     private Rigidbody _rb;
 
+    [SerializeField]
     private Vector3[] _positions;
+    [SerializeField]
+    [Multiline]
+    private string _whatAmIDoing;
+    [SerializeField]
     private Vector3 _movePos;
 
     [Header("Enemy Data")]
@@ -24,9 +29,12 @@ public class EnemyBehaviour : MonoBehaviour
     private float _sightRange;
     [SerializeField]
     private float _pathSightRange;
+    [SerializeField]
+    private int _intelligence;
 
     [SerializeField]
     private LayerMask _collisionMask;
+    [SerializeField]
     private MoveMode _mode;
 
     [SerializeField]
@@ -50,15 +58,28 @@ public class EnemyBehaviour : MonoBehaviour
         
         if (MapManager.main.MapData[Mathf.RoundToInt(_movePos.x), Mathf.RoundToInt(_movePos.z)] > 0)
         {
-            Vector3 travelDir = transform.position + (_movePos - transform.position).normalized;
+            Vector3 travelDir = transform.position + (_movePos - new Vector3(Mathf.RoundToInt(transform.position.x), 0.5f, Mathf.RoundToInt(transform.position.z))).normalized;
 
             BuildingManager.main.DamageBuilding(Mathf.RoundToInt(travelDir.x), Mathf.RoundToInt(travelDir.z), _damage);
-            _rb.velocity = Vector3.zero;
+
+            if (Vector3.Distance(transform.position, _movePos) > 1.01f)
+            {
+                Vector3 direction = _movePos - transform.position;
+                _rb.velocity = direction.normalized * _speed * 0.5f;
+            }
+            else
+            {
+                _rb.velocity = Vector3.zero;
+            }
         }
-        else
+        else if (MapManager.main.MapData[Mathf.RoundToInt(_movePos.x), Mathf.RoundToInt(_movePos.z)] == 0)
         {
             Vector3 direction = _movePos - transform.position;
             _rb.velocity = direction.normalized * _speed * 0.5f;
+        }
+        else
+        {
+            _rb.velocity = Vector3.zero;
         }
     }
 
@@ -80,8 +101,8 @@ public class EnemyBehaviour : MonoBehaviour
             }
         }
         */
-        List<Node> freeNodes = Pathfinder.Pathfind(startPos, endPos, MapManager.main.MapData, false);
-        List<Node> destroyWallNodes = Pathfinder.Pathfind(startPos, endPos, MapManager.main.MapData, true);
+        List<Node> freeNodes = Pathfinder.Pathfind(startPos, endPos, MapManager.main.MapData, false, _intelligence);
+        List<Node> destroyWallNodes = Pathfinder.Pathfind(startPos, endPos, MapManager.main.MapData, true, _intelligence);
 
         List<Node> nodes;
         if (freeNodes[^1].Position != endPos || destroyWallNodes[^1].Position != endPos)
@@ -109,17 +130,8 @@ public class EnemyBehaviour : MonoBehaviour
 
             for (int i = 0; i < _positions.Length; i++)
             {
-                _positions[i] = nodePos[i];
+                _positions[i] = new Vector3(nodePos[i].x, 0.5f, nodePos[i].z);
             }
-
-            string pathString = "";
-
-            foreach (Vector3 curPosOf in _positions)
-            {
-                pathString += curPosOf + ", ";
-            }
-
-            print("I can't reach either! I'll just barrel through with " + pathString);
         }
         else
         {
@@ -139,37 +151,39 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 _positions[i] = new Vector3(nodes[i].Position.x, 0.5f, nodes[i].Position.z);
             }
-
-            string pathString = "";
-
-            foreach (Vector3 curPosOf in _positions)
-            {
-                pathString += curPosOf + ", ";
-            }
-
-            print("Me when " + pathString);
         }
 
+        if (MapManager.main.MapData[Mathf.RoundToInt(_positions[1].x), Mathf.RoundToInt(_positions[1].z)] == 0
+            && MapManager.main.MapData[Mathf.RoundToInt(_positions[0].x), Mathf.RoundToInt(_positions[0].z)] == 0)
+        {
+            _movePos = _positions[1];
+        }
+        else
+        {
+            _movePos = _positions[0];
+        }
         UpdateTarget();
     }
 
     public void Move()
     {
-        if (_movePos != null && _positions != null && _positions.Length >= 2)
+        if (_movePos == null || _movePos == Vector3.zero)
         {
-            if (Vector3.Distance(transform.position, _movePos) < 0.05f)
-            {
-                transform.position = _movePos;
-                //UpdatePath();
-                if (transform.position.x == MapManager.main.Width - 1)
-                {
-                    GameManager.main.LoseLife(_damage);
-                    Destroy(gameObject);
-                }
-                UpdateTarget();
-            }
-            //_movePos = _positions[1];
+            _movePos = _positions[0];
         }
+
+        if (Vector3.Distance(transform.position, _movePos) < 0.05f)
+        {
+            transform.position = _movePos;
+            //UpdatePath();
+            if (transform.position.x == MapManager.main.Width - 1)
+            {
+                GameManager.main.LoseLife(_damage);
+                Destroy(gameObject);
+            }
+        }
+        UpdateTarget();
+        //_movePos = _positions[1];
     }
 
     public void TakeDamage(int damageAmount)
@@ -209,39 +223,40 @@ public class EnemyBehaviour : MonoBehaviour
     }
     */
 
-    public bool CanReach()
-    {
-        Vector3Int startPos = new Vector3Int(Mathf.RoundToInt(transform.position.x), 0, Mathf.RoundToInt(transform.position.y));
-        Vector3Int endPos = new Vector3Int(MapManager.main.Width - 1, 0, startPos.y);
-
-        List<Node> nodes = Pathfinder.Pathfind(startPos, endPos, MapManager.main.MapData, false);
-        if (nodes[^1].Position == endPos)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     public void UpdateTarget()
     {
-        for (int i = _positions.Length - 1; i >= 0; i--)
+        /*
+        for (int i = _positions.Length - 1; i >= IndexOf(_movePos); i--)
         {
             Vector3 targetPos = new(_positions[i].x, 0.5f, _positions[i].z);
-
             Vector3 direction = (targetPos - transform.position);
 
-            if (direction.magnitude == 1 && MapManager.main.MapData[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.z)] >= 0 && _mode == MoveMode.Attack)
+            _whatAmIDoing += "\n\n " + Physics.Raycast(transform.position, direction, direction.magnitude, _collisionMask);
+            if (!Physics.Raycast(transform.position, direction, direction.magnitude, _collisionMask))
             {
                 _movePos = new(Mathf.RoundToInt(targetPos.x), 0.5f, Mathf.RoundToInt(targetPos.z));
-                break;
+                return;
             }
 
+            /*
             if (direction.magnitude > 0.01 && !Physics.Raycast(transform.position, direction, direction.magnitude, _collisionMask))
             {
                 _movePos = new(Mathf.RoundToInt(targetPos.x), 0.5f, Mathf.RoundToInt(targetPos.z));
-                break;
+                return;
             }
+
+            if (direction.magnitude - 1 <= 0.01f && MapManager.main.MapData[Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.z)] >= 0)
+            {
+                _movePos = new(Mathf.RoundToInt(targetPos.x), 0.5f, Mathf.RoundToInt(targetPos.z));
+                return;
+            }
+            
+        }
+        */
+        if (transform.position == _movePos)
+        {
+            Vector3 oldPos = _movePos;
+            _movePos = _positions[Mathf.Min(IndexOf(_movePos) + 1, _positions.Length - 1)];
         }
     }
 
@@ -261,5 +276,18 @@ public class EnemyBehaviour : MonoBehaviour
         }
 
         return false;
+    }
+
+    public int IndexOf(Vector3 testPos)
+    {
+        for (int i = 0; i < _positions.Length; i++)
+        {
+            if (_positions[i] == testPos)
+            {
+                return i;
+            }
+        }
+
+        return 0;
     }
 }

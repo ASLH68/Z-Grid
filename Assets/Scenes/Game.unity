@@ -890,7 +890,7 @@ MonoBehaviour:
     - enemies:
       - {fileID: 9221855228132271997, guid: 44d55444a1e20f845b156ebadec0145f, type: 3}
       - {fileID: 9221855228132271997, guid: c0503b11c6c3f9b43beb01274d24b02c, type: 3}
-      enemyAmounts: 0500000002000000
+      enemyAmounts: 6400000002000000
       time: 15
     - enemies:
       - {fileID: 9221855228132271997, guid: 44d55444a1e20f845b156ebadec0145f, type: 3}
@@ -913,8 +913,8 @@ MonoBehaviour:
   _offset: {x: 0, y: 0.5, z: 0}
   _wallObj: {fileID: 1972211626219385179, guid: fd98920ea76d89a45972c5e1999cb2fe, type: 3}
   _turretObj: {fileID: 1972211626219385179, guid: 5e3217b710d032e49927146bf8696614, type: 3}
-  _wallCost: 50
-  _turretCost: 250
+  _wallCost: 0
+  _turretCost: 0
   _currentBuilding: 0
 --- !u!114 &387982668
 MonoBehaviour:

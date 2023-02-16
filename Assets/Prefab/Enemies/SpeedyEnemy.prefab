@@ -98,14 +98,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f6dbc2bac44b74aa3b79e10cd540e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _positions: []
+  _whatAmIDoing: 
+  _movePos: {x: 0, y: 0, z: 0}
   _maxHealth: 75
   _speed: 3.5
   _damage: 3
-  _sightRange: 4
-  _pathSightRange: 2
+  _sightRange: 6
+  _pathSightRange: 4
+  _intelligence: 200
   _collisionMask:
     serializedVersion: 2
     m_Bits: 128
+  _mode: 0
   _baseMat: {fileID: 2100000, guid: e05f598f2fbeb2b4daeb9794fb166438, type: 2}
   _dmgMat: {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
 --- !u!54 &4694230131064877773

@@ -114,4 +114,19 @@ public class EnemyManager : MonoBehaviour
 
         return _enemies.Count != 0;
     }
+
+    public bool EnemyOn(int x, int y)
+    {
+        foreach (EnemyBehaviour curEnemy in _enemies)
+        {
+            Vector3 avgEnemyPos = new(Mathf.RoundToInt(curEnemy.transform.position.x), 0.5f, Mathf.RoundToInt(curEnemy.transform.position.z));
+
+            if (avgEnemyPos == new Vector3(x, 0.5f, y))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
