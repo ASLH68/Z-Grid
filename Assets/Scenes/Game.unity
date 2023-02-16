@@ -878,38 +878,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72446fb6f58e249419f4e193a713e641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currencyAmount: 3000
+  _currencyAmount: 0
   _health: 0
   _maxHealth: 20
   _rounds:
   - waves:
-    - enemyCount: 3
+    - enemies:
+      - {fileID: 9221855228132271997, guid: 44d55444a1e20f845b156ebadec0145f, type: 3}
+      enemyAmounts: 05000000
       time: 7.5
-    - enemyCount: 5
-      time: 10
-  - waves:
-    - enemyCount: 5
-      time: 10
-    - enemyCount: 10
-      time: 12.5
-    - enemyCount: 15
-      time: 10
-  - waves:
-    - enemyCount: 10
-      time: 7.5
-    - enemyCount: 20
-      time: 10
-    - enemyCount: 25
-      time: 10
-  - waves:
-    - enemyCount: 25
-      time: 10
-    - enemyCount: 20
-      time: 5
-    - enemyCount: 20
+    - enemies:
+      - {fileID: 9221855228132271997, guid: 44d55444a1e20f845b156ebadec0145f, type: 3}
+      - {fileID: 9221855228132271997, guid: c0503b11c6c3f9b43beb01274d24b02c, type: 3}
+      enemyAmounts: 0500000002000000
       time: 15
-    - enemyCount: 30
-      time: 15
+    - enemies:
+      - {fileID: 9221855228132271997, guid: 44d55444a1e20f845b156ebadec0145f, type: 3}
+      - {fileID: 9221855228132271997, guid: c0503b11c6c3f9b43beb01274d24b02c, type: 3}
+      - {fileID: 9221855228132271997, guid: f2aeae803d978244a9650b8510edf2d8, type: 3}
+      enemyAmounts: 0a0000000300000003000000
+      time: 10
 --- !u!114 &387982667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -940,7 +928,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4b2d570f7601114fa90c0975e38c43c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyObj: {fileID: 9221855228132271997, guid: 44d55444a1e20f845b156ebadec0145f, type: 3}
   _enemiesParent: {fileID: 398476815}
 --- !u!114 &387982669
 MonoBehaviour:
@@ -1694,8 +1681,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1719,7 +1706,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1207770056}
   m_LocalRotation: {x: 0.60876137, y: 0, z: 0, w: 0.7933534}
-  m_LocalPosition: {x: 14.3, y: 17.85, z: 2.8}
+  m_LocalPosition: {x: 17, y: 25, z: 2.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

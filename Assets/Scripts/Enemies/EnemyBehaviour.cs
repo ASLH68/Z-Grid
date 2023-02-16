@@ -12,10 +12,19 @@ public class EnemyBehaviour : MonoBehaviour
     private Vector3[] _positions;
     private Vector3 _movePos;
 
-    [SerializeField]
-    private int _health;
+    [Header("Enemy Data")]
     [SerializeField]
     private int _maxHealth;
+    private int _health;
+    [SerializeField]
+    private float _speed;
+    [SerializeField]
+    private int _damage;
+    [SerializeField]
+    private float _sightRange;
+    [SerializeField]
+    private float _pathSightRange;
+
     [SerializeField]
     private LayerMask _collisionMask;
     private MoveMode _mode;
@@ -43,13 +52,13 @@ public class EnemyBehaviour : MonoBehaviour
         {
             Vector3 travelDir = transform.position + (_movePos - transform.position).normalized;
 
-            BuildingManager.main.DamageBuilding(Mathf.RoundToInt(travelDir.x), Mathf.RoundToInt(travelDir.z));
+            BuildingManager.main.DamageBuilding(Mathf.RoundToInt(travelDir.x), Mathf.RoundToInt(travelDir.z), _damage);
             _rb.velocity = Vector3.zero;
         }
         else
         {
             Vector3 direction = _movePos - transform.position;
-            _rb.velocity = direction.normalized;
+            _rb.velocity = direction.normalized * _speed * 0.5f;
         }
     }
 
@@ -71,32 +80,74 @@ public class EnemyBehaviour : MonoBehaviour
             }
         }
         */
-        if (startPos == endPos)
-        {
-            Destroy(gameObject);
-        }
-
         List<Node> freeNodes = Pathfinder.Pathfind(startPos, endPos, MapManager.main.MapData, false);
         List<Node> destroyWallNodes = Pathfinder.Pathfind(startPos, endPos, MapManager.main.MapData, true);
 
-        //print("Free: " + Node.NodeDistance(freeNodes) + " vs Wall: " + Node.NodeDistance(destroyWallNodes));
-
         List<Node> nodes;
-        if (Node.NodeDistance(freeNodes) > Node.NodeDistance(destroyWallNodes) || !CanReach() || freeNodes[^1].Position.x < destroyWallNodes[^1].Position.x)
+        if (freeNodes[^1].Position != endPos || destroyWallNodes[^1].Position != endPos)
         {
             _mode = MoveMode.Attack;
-            nodes = destroyWallNodes;
+            List<Vector3Int> nodePos = new();
+
+            Vector3Int curPos = startPos;
+
+            while (curPos != endPos)
+            {
+                if (curPos.x != endPos.x)
+                {
+                    curPos += (int)Mathf.Sign(endPos.x - curPos.x) * Vector3Int.right;
+                }
+                else if (curPos.z != endPos.z)
+                {
+                    curPos += (int)Mathf.Sign(endPos.z - curPos.z) * Vector3Int.forward;
+                }
+
+                nodePos.Add(curPos);
+            }
+
+            _positions = new Vector3[nodePos.Count];
+
+            for (int i = 0; i < _positions.Length; i++)
+            {
+                _positions[i] = nodePos[i];
+            }
+
+            string pathString = "";
+
+            foreach (Vector3 curPosOf in _positions)
+            {
+                pathString += curPosOf + ", ";
+            }
+
+            print("I can't reach either! I'll just barrel through with " + pathString);
         }
         else
         {
-            _mode = MoveMode.Passive;
-            nodes = freeNodes;
-        }
+            if (Node.NodeDistance(freeNodes) > Node.NodeDistance(destroyWallNodes) || freeNodes[^1].Position != endPos)
+            {
+                _mode = MoveMode.Attack;
+                nodes = destroyWallNodes;
+            }
+            else
+            {
+                _mode = MoveMode.Passive;
+                nodes = freeNodes;
+            }
 
-        _positions = new Vector3[nodes.Count];
-        for (int i = 0; i < _positions.Length; i++)
-        {
-            _positions[i] = new Vector3(nodes[i].Position.x, 0.5f, nodes[i].Position.z);
+            _positions = new Vector3[nodes.Count];
+            for (int i = 0; i < _positions.Length; i++)
+            {
+                _positions[i] = new Vector3(nodes[i].Position.x, 0.5f, nodes[i].Position.z);
+            }
+
+            string pathString = "";
+
+            foreach (Vector3 curPosOf in _positions)
+            {
+                pathString += curPosOf + ", ";
+            }
+
+            print("Me when " + pathString);
         }
 
         UpdateTarget();
@@ -106,13 +157,13 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (_movePos != null && _positions != null && _positions.Length >= 2)
         {
-            if (Vector3.Distance(transform.position, _movePos) < 0.01f)
+            if (Vector3.Distance(transform.position, _movePos) < 0.05f)
             {
                 transform.position = _movePos;
                 //UpdatePath();
                 if (transform.position.x == MapManager.main.Width - 1)
                 {
-                    GameManager.main.LoseLife(1);
+                    GameManager.main.LoseLife(_damage);
                     Destroy(gameObject);
                 }
                 UpdateTarget();
@@ -192,5 +243,23 @@ public class EnemyBehaviour : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public bool WithinRange(Vector3 pos)
+    {
+        if (Vector3.Distance(pos, transform.position) <= _sightRange)
+        {
+            return true;
+        }
+
+        foreach (Vector3 curPos in _positions)
+        {
+            if (Vector3.Distance(pos, curPos) <= _pathSightRange)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

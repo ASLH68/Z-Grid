@@ -36,7 +36,7 @@ public class CanvasManager : MonoBehaviour
     /// <summary>
     /// Sets the costs of the different buildings
     /// </summary>
-    private void SetCosts()
+    public void SetCosts()
     {
         _wallCostText.text = "$" + BuildingManager.main.WallCost;
         _turretCostText.text = "$" + BuildingManager.main.TurretCost;

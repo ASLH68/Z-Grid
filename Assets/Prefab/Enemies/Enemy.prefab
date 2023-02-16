@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: cbc279dfc4c674f49b2f9f24547d77fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,12 +98,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f6dbc2bac44b74aa3b79e10cd540e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 0
   _maxHealth: 100
+  _speed: 2
+  _damage: 1
+  _sightRange: 2
+  _pathSightRange: 1
   _collisionMask:
     serializedVersion: 2
     m_Bits: 128
-  _baseMat: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  _baseMat: {fileID: 2100000, guid: cbc279dfc4c674f49b2f9f24547d77fb, type: 2}
   _dmgMat: {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
 --- !u!54 &4694230131064877773
 Rigidbody:

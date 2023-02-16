@@ -63,7 +63,7 @@ namespace Pathfinding
                 openNodes.Remove(activeNode);
 
                 if (openNodes.Count == 0
-                    || openNodes.Count > 600)
+                    || openNodes.Count > 350)
                 {
                     break;
                 }

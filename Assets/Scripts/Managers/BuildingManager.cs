@@ -66,7 +66,7 @@ public class BuildingManager : MonoBehaviour
             MapManager.main.EditGrid(Mathf.RoundToInt(t.transform.position.x), Mathf.RoundToInt(t.transform.position.z), -1);
 
             //Edits the pathing of all visible enemies
-            EnemyManager.main.UpdatePaths();
+            EnemyManager.main.UpdatePaths(true);
         }
     }
 
@@ -91,7 +91,7 @@ public class BuildingManager : MonoBehaviour
                     MapManager.main.EditGrid(x, y, 25);
 
                     //Edits the pathing of all visible enemies
-                    EnemyManager.main.UpdatePaths();
+                    EnemyManager.main.UpdatePaths(new Vector3(x, 0.5f, y));
                 }
                 break;
             //Creates a new turret obj
@@ -106,20 +106,23 @@ public class BuildingManager : MonoBehaviour
                     MapManager.main.EditGrid(x, y, 75);
 
                     //Edits the pathing of all visible enemies
-                    EnemyManager.main.UpdatePaths();
+                    EnemyManager.main.UpdatePaths(new Vector3(x, 0.5f, y));
+
+                    _turretCost = Mathf.FloorToInt(_turretCost * 1.025f);
+                    CanvasManager.main.SetCosts();
                 }
                 break;
         }
     }
 
-    public void DamageBuilding(int x, int y)
+    public void DamageBuilding(int x, int y, int damage)
     {
         //Find the building at the location of (x,y)
         foreach (BuildingBehaviour curBehaviour in _buildings.ToArray())
         {
             if (Mathf.RoundToInt(curBehaviour.transform.position.x) == x && Mathf.RoundToInt(curBehaviour.transform.position.z) == y)
             {
-                if (curBehaviour.TakeDamage())
+                if (curBehaviour.TakeDamage(damage))
                 {
                     DestroyBuilding(x, y);
                 }
@@ -146,7 +149,7 @@ public class BuildingManager : MonoBehaviour
             }
         }
 
-        EnemyManager.main.UpdatePaths();
+        EnemyManager.main.UpdatePaths(new Vector3(x, 0.5f, y));
     }
 
     /// <summary>

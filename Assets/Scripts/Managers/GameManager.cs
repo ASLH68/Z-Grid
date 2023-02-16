@@ -94,7 +94,8 @@ public class GameManager : MonoBehaviour
 
                 if (_currentRound >= _rounds.Length)
                 {
-                    EnemyManager.main.StartRound(new Round(_currentRound));
+                    break;
+                    //EnemyManager.main.StartRound(new Round(_currentRound));
                 }
                 else
                 {
@@ -112,6 +113,7 @@ public struct Round
 {
     public Wave[] waves;
 
+    /*
     public Round(int roundNum)
     {
         waves = new Wave[Mathf.FloorToInt(Mathf.Sqrt(roundNum)) + 1];
@@ -122,11 +124,53 @@ public struct Round
             waves[i].time = (9.9f + Random.Range(-2.5f, 2.5f)) / waves.Length;
         }
     }
+    */
 }
 
 [System.Serializable]
 public struct Wave
 {
-    public int enemyCount;
+    public EnemyBehaviour[] enemies;
+    public int[] enemyAmounts;
+
     public float time;
+
+    public EnemyBehaviour GetRandomEnemy()
+    {
+        if (!EnemiesLeft())
+        {
+            return null;
+        }
+
+        int enemyIndex;
+        do
+        {
+            enemyIndex = Random.Range(0, enemies.Length);
+        } while (enemyAmounts[enemyIndex] <= 0);
+
+        enemyAmounts[enemyIndex]--;
+        return enemies[enemyIndex];
+    }
+
+    private bool EnemiesLeft()
+    {
+        foreach (int curAmount in enemyAmounts)
+        {
+            if (curAmount > 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int EnemyCount()
+    {
+        int total = 0;
+        foreach (int curAmount in enemyAmounts)
+        {
+            total += curAmount;
+        }
+        return total;
+    }
 }

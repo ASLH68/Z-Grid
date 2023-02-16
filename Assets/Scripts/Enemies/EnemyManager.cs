@@ -8,8 +8,6 @@ public class EnemyManager : MonoBehaviour
     public static EnemyManager main;
 
     [Header("Enemies")]
-    [SerializeField]
-    private EnemyBehaviour _enemyObj;
     private List<EnemyBehaviour> _enemies;
 
     [SerializeField] private Transform _enemiesParent;
@@ -53,7 +51,7 @@ public class EnemyManager : MonoBehaviour
         StartCoroutine(SpawnWaves(round));
     }
 
-    public void SpawnEnemy()
+    public void SpawnEnemy(EnemyBehaviour enemyObj)
     {
         int width = MapManager.main.Width;
         int height = MapManager.main.Height;
@@ -61,11 +59,22 @@ public class EnemyManager : MonoBehaviour
         transform.position = new Vector3(0, 0.5f, /*13*/Random.Range(0, height));
         if (_enemies != null)
         {
-            _enemies.Add(Instantiate(_enemyObj, transform.position, Quaternion.identity));
+            _enemies.Add(Instantiate(enemyObj, transform.position, Quaternion.identity));
         }
     }
 
-    public void UpdatePaths()
+    public void UpdatePaths(Vector3 pos)
+    {
+        foreach (EnemyBehaviour curEnemy in _enemies)
+        {
+            if (curEnemy != null && curEnemy.WithinRange(pos))
+            {
+                curEnemy.UpdatePath();
+            }
+        }
+    }
+
+    public void UpdatePaths(bool doAll)
     {
         foreach (EnemyBehaviour curEnemy in _enemies)
         {
@@ -80,10 +89,10 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (Wave curWave in round.waves)
         {
-            for (int i = 0; i < curWave.enemyCount; i++)
+            while (curWave.EnemyCount() > 0)
             {
-                SpawnEnemy();
-                yield return new WaitForSeconds(0.5f);
+                SpawnEnemy(curWave.GetRandomEnemy());
+                yield return new WaitForSeconds(0.5f + Random.Range(0f, 0.5f));
             }
             yield return new WaitForSeconds(curWave.time);
         }

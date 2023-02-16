@@ -32,11 +32,11 @@ public class BuildingBehaviour : MonoBehaviour
         
     }
 
-    public bool TakeDamage()
+    public bool TakeDamage(int damage)
     {
-        _health--;
+        _health -= damage;
 
-        float damageRatio = (float)_health / (float)_maxHealth;
+        float damageRatio = (float)_health / _maxHealth;
         Material brokenMat = new Material(_buildingMat);
         brokenMat.color *= 0.25f;
 
