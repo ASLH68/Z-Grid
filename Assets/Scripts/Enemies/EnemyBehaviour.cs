@@ -12,9 +12,6 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField]
     private Vector3[] _positions;
     [SerializeField]
-    [Multiline]
-    private string _whatAmIDoing;
-    [SerializeField]
     private Vector3 _movePos;
 
     [Header("Enemy Data")]
