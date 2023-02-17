@@ -119,11 +119,14 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (EnemyBehaviour curEnemy in _enemies)
         {
-            Vector3 avgEnemyPos = new(Mathf.RoundToInt(curEnemy.transform.position.x), 0.5f, Mathf.RoundToInt(curEnemy.transform.position.z));
-
-            if (avgEnemyPos == new Vector3(x, 0.5f, y))
+            if (curEnemy != null)
             {
-                return true;
+                Vector3 avgEnemyPos = new(Mathf.RoundToInt(curEnemy.transform.position.x), 0.5f, Mathf.RoundToInt(curEnemy.transform.position.z));
+
+                if (avgEnemyPos == new Vector3(x, 0.5f, y))
+                {
+                    return true;
+                }
             }
         }
 

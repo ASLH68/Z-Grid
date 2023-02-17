@@ -17,15 +17,10 @@ public class GridSquareBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!_occupied)
+        Vector2Int gridSquarePos = new(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+        if (gridSquarePos.x >= 3 && !EnemyManager.main.EnemyOn(gridSquarePos.x, gridSquarePos.y))
         {
-            Vector2Int gridSquarePos = new(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
-            if (gridSquarePos.x >= 3 && !EnemyManager.main.EnemyOn(gridSquarePos.x, gridSquarePos.y))
-            {
-                _manager.EditGrid(gridSquarePos.x, gridSquarePos.y, -1);
-                BuildingManager.main.CreateBuilding(gridSquarePos.x, gridSquarePos.y);
-                _occupied = true;
-            }
+            BuildingManager.main.CreateBuilding(gridSquarePos.x, gridSquarePos.y);
         }
     }
 }
