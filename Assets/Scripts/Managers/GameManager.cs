@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndRound1()
     {
-        //BuildingManager.main.DestroyAllBuildings();
         PlayerManager.main.ModifyCurrency(_currencyAmount);
     }
 

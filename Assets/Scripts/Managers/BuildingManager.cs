@@ -14,18 +14,37 @@ public class BuildingManager : MonoBehaviour
     [SerializeField]
     private Vector3 _offset;
     [SerializeField] BuildingBehaviour _wallObj;
-    [SerializeField] BuildingBehaviour _turretObj;
+    [SerializeField] BuildingBehaviour _basicTurretObj;    
+    [SerializeField] BuildingBehaviour _machineTurretObj;
+    [SerializeField] BuildingBehaviour _sniperTurretObj;
 
     [Header("Building Costs")]
     [SerializeField] private int _wallCost;
-    [SerializeField] private int _turretCost;
+    [SerializeField] private int _basicTurretCost;    
+    [SerializeField] private int _machineTurretCost;
+    [SerializeField] private int _sniperTurretCost;
+
+    [Header("Building Buttons")]
+    [SerializeField] private GameObject _wallButton;
+    [SerializeField] private GameObject _basicTurretButton;
+    [SerializeField] private GameObject _machineTurretButton;
+    [SerializeField] private GameObject _sniperTurretButton;
 
     public int WallCost => _wallCost;
-    public int TurretCost => _turretCost;
+    public int BasicTurretCost => _basicTurretCost;
+    public int MachineTurretCost => _machineTurretCost;
+    public int SniperTurretCost => _sniperTurretCost;
+
+    [Header("Weights")]
+    [SerializeField] private int _wallWeight;
+    [SerializeField] private int _turretWeight;
+
     public enum BuildingType
     {
         wall,
-        turret
+        baseTurret,
+        machineTurret,
+        sniperTurret
     }
 
     public BuildingType _currentBuilding;
@@ -81,40 +100,59 @@ public class BuildingManager : MonoBehaviour
         {
             //Creates the new wall object
             case BuildingType.wall:
-                transform.position = new Vector3(x, 0, y) + _offset;
-                if (PlayerManager.main.HasEnoughCurrency(_wallCost))
-                {
-                    _buildings.Add(Instantiate(_wallObj, transform.position, Quaternion.identity));
-                    PlayerManager.main.ModifyCurrency(-_wallCost);
-
-                    //Edits the map
-                    MapManager.main.EditGrid(x, y, 25);
-
-                    //Edits the pathing of all visible enemies
-                    EnemyManager.main.UpdatePaths(new Vector3(x, 0.5f, y));
-                }
+                PlaceBuilding(x, y, _wallObj, _wallCost, _wallWeight);
                 break;
+
             //Creates a new turret obj
-            case BuildingType.turret:
-                transform.position = new Vector3(x, 0, y) + _offset;
-                if (PlayerManager.main.HasEnoughCurrency(_turretCost))
-                {
-                    _buildings.Add(Instantiate(_turretObj, transform.position, Quaternion.identity));
-                    PlayerManager.main.ModifyCurrency(-_turretCost);
+            case BuildingType.baseTurret:
+                PlaceBuilding(x, y, _basicTurretObj, _basicTurretCost, _turretWeight);
+                _basicTurretCost = Mathf.FloorToInt(_basicTurretCost * 1.025f);
+                CanvasManager.main.SetCosts();
+                break;
 
-                    //Edits the map
-                    MapManager.main.EditGrid(x, y, 75);
+            //Creates a new machine turret
+            case BuildingType.machineTurret:
+                PlaceBuilding(x, y, _machineTurretObj, _machineTurretCost, _turretWeight);
+                break;
 
-                    //Edits the pathing of all visible enemies
-                    EnemyManager.main.UpdatePaths(new Vector3(x, 0.5f, y));
-
-                    _turretCost = Mathf.FloorToInt(_turretCost * 1.025f);
-                    CanvasManager.main.SetCosts();
-                }
+            //Creates a new sniper turret
+            case BuildingType.sniperTurret:
+                PlaceBuilding(x, y, _sniperTurretObj, _sniperTurretCost, _turretWeight);
                 break;
         }
     }
 
+    /// <summary>
+    /// Places a building
+    /// </summary>
+    /// <param name="x"> x pos of building </param>
+    /// <param name="y"> y pos of building </param>
+    /// <param name="buildingToPlace"> building being placed </param>
+    /// <param name="cost"> cost of building </param>
+    /// <param name="weight"> weight of building </param>
+    private void PlaceBuilding(int x, int y, BuildingBehaviour buildingToPlace, int cost, int weight)
+    {
+        transform.position = new Vector3(x, 0, y) + _offset;
+
+        if (PlayerManager.main.HasEnoughCurrency(cost))
+        {
+            _buildings.Add(Instantiate(buildingToPlace, transform.position, Quaternion.identity));
+            PlayerManager.main.ModifyCurrency(-cost);
+
+            //Edits the map
+            MapManager.main.EditGrid(x, y, weight);
+
+            //Edits the pathing of all visible enemies
+            EnemyManager.main.UpdatePaths(new Vector3(x, 0.5f, y));
+        }
+    }
+
+    /// <summary>
+    /// Damages a building
+    /// </summary>
+    /// <param name="x"> x pos of building </param>
+    /// <param name="y"> y pos of building </param>
+    /// <param name="damage"> amt of dmg </param>
     public void DamageBuilding(int x, int y, int damage)
     {
         //Find the building at the location of (x,y)
@@ -174,11 +212,21 @@ public class BuildingManager : MonoBehaviour
         {
             case "wall":
                 _currentBuilding = BuildingType.wall;
+                CanvasManager.main.CurrentButton = _wallButton;
                 break;
-            case "turret":
-                _currentBuilding = BuildingType.turret;
+            case "base turret":
+                _currentBuilding = BuildingType.baseTurret;
+                CanvasManager.main.CurrentButton = _basicTurretButton;
+                break;
+            case "machine turret":
+                _currentBuilding = BuildingType.machineTurret;
+                CanvasManager.main.CurrentButton = _machineTurretButton;
+                break;
+            case "sniper turret":
+                _currentBuilding = BuildingType.sniperTurret;
+                CanvasManager.main.CurrentButton = _sniperTurretButton;
                 break;
         }
-        CanvasManager.main.UpdateBuildingText();
+        //CanvasManager.main.UpdateBuildingText();
     }
 }
