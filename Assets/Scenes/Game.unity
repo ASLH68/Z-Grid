@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currencyAmount: 0
   _health: 0
-  _maxHealth: 20
+  _maxHealth: 100
   _enemyCode: '5,0,0,0
 
     5,0,0,0
@@ -1445,7 +1445,7 @@ MonoBehaviour:
   _basicTurretObj: {fileID: 1972211626219385179, guid: 5e3217b710d032e49927146bf8696614, type: 3}
   _machineTurretObj: {fileID: 1972211626219385179, guid: aa7ba9ba76a0b374196336cb5acad632, type: 3}
   _sniperTurretObj: {fileID: 1972211626219385179, guid: b4e018530a6950244a0e971a0a844c03, type: 3}
-  _wallCost: 50
+  _wallCost: 25
   _basicTurretCost: 250
   _machineTurretCost: 350
   _sniperTurretCost: 300

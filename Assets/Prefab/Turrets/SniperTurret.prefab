@@ -106,7 +106,7 @@ MonoBehaviour:
   _damage: 25
   _radius: 12
   _type: 3
-  _attackCooldown: 4
+  _attackCooldown: 2
   _buildingMat: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!65 &2726651816852995823
 BoxCollider:
