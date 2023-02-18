@@ -23,4 +23,14 @@ public class GridSquareBehaviour : MonoBehaviour
             BuildingManager.main.CreateBuilding(gridSquarePos.x, gridSquarePos.y);
         }
     }
+
+    private void OnMouseEnter()
+    {
+        if (BuildingManager.main._currentBuilding == BuildingManager.BuildingType.destroy)
+        {
+            BuildingManager.main.SetTargetPos(Vector3.forward * 100);
+            return;
+        }
+        BuildingManager.main.SetTargetPos(transform.position);
+    }
 }

@@ -16,7 +16,6 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _livesUIText;
 
     [Header("Building UI")]
-    [SerializeField] private TextMeshProUGUI _buildingUIText;
     [SerializeField] private TextMeshProUGUI _wallCostText;
     [SerializeField] private TextMeshProUGUI _turretCostText;    
     [SerializeField] private TextMeshProUGUI _machineTurretCostText;
@@ -70,14 +69,6 @@ public class CanvasManager : MonoBehaviour
     public void UpdateLivesText()
     {
         _livesUIText.text = GameManager.main.Health + " Lives";
-    }
-
-    /// <summary>
-    /// Updates the text letting players know which building is currently selected
-    /// </summary>
-    public void UpdateBuildingText()
-    {
-        _buildingUIText.text = BuildingManager.main._currentBuilding.ToString();
     }
 
     /// <summary>

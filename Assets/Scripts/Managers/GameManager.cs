@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     private Round _round;
 
     public int Health => _health;
-    public int CurrentRound => _currentRound;
+    public int CurrentRound { get => _currentRound; set => _currentRound = value; }
 
     private void Awake()
     {
@@ -52,6 +52,18 @@ public class GameManager : MonoBehaviour
         EnemyManager.main.StartRound(_round);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("Start");
+        }
+    }
+
     public void LoseLife(int value)
     {
         _health -= value;
@@ -68,15 +80,6 @@ public class GameManager : MonoBehaviour
     public void EndRound1()
     {
         //PlayerManager.main.ModifyCurrency(_currencyAmount);
-    }
-
-    /// <summary>
-    /// Incrases the current round by 1
-    /// </summary>
-    private void IncreaseRound()
-    {
-        _currentRound++;
-        CanvasManager.main.UpdateRoundText();
     }
 }
 
