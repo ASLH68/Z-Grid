@@ -101,9 +101,9 @@ MonoBehaviour:
   _positions: []
   _movePos: {x: 0, y: 0, z: 0}
   _maxHealth: 75
-  _moneyAmount: 75
+  _moneyAmount: 25
   _speed: 3.5
-  _damage: 3
+  _damage: 7
   _sightRange: 6
   _pathSightRange: 4
   _intelligence: 150
