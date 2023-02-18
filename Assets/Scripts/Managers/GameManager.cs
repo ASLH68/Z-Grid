@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("Start");
         }
+        Time.timeScale = Input.GetKey(KeyCode.Space) ? 3 : 1;
     }
 
     public void LoseLife(int value)
