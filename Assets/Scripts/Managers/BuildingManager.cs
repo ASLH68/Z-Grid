@@ -113,11 +113,15 @@ public class BuildingManager : MonoBehaviour
             //Creates a new machine turret
             case BuildingType.machineTurret:
                 PlaceBuilding(x, y, _machineTurretObj, _machineTurretCost, _turretWeight);
+                _machineTurretCost = Mathf.FloorToInt(_machineTurretCost * 1.025f);
+                CanvasManager.main.SetCosts();
                 break;
 
             //Creates a new sniper turret
             case BuildingType.sniperTurret:
                 PlaceBuilding(x, y, _sniperTurretObj, _sniperTurretCost, _turretWeight);
+                _sniperTurretCost = Mathf.FloorToInt(_sniperTurretCost * 1.025f);
+                CanvasManager.main.SetCosts();
                 break;
         }
     }

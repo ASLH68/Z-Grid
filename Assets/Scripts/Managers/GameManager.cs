@@ -12,15 +12,18 @@ public class GameManager : MonoBehaviour
     [Header("Given Currencies")]
     [Tooltip("Amount of currency the player receives at the end round 1")]
     [SerializeField] private int _currencyAmount;
-    
 
     [SerializeField]
     private int _health;
     [SerializeField]
     private int _maxHealth;
 
+    [Multiline]
     [SerializeField]
-    private Round[] _rounds;
+    private string _enemyCode;
+
+    [SerializeField]
+    private Round _round;
 
     public int Health => _health;
     public int CurrentRound => _currentRound;
@@ -42,11 +45,11 @@ public class GameManager : MonoBehaviour
         _health = _maxHealth;
         _currentRound = 1;
         MapManager.main.CreateMap();
-
-        EnemyManager.main.StartRound(_rounds[0]);
-        StartCoroutine(RoundProgression());
-
+        
         CanvasManager.main.UpdateLivesText();
+
+        _round = new Round(_enemyCode);
+        EnemyManager.main.StartRound(_round);
     }
 
     public void LoseLife(int value)
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EndRound1()
     {
-        PlayerManager.main.ModifyCurrency(_currencyAmount);
+        //PlayerManager.main.ModifyCurrency(_currencyAmount);
     }
 
     /// <summary>
@@ -75,55 +78,24 @@ public class GameManager : MonoBehaviour
         _currentRound++;
         CanvasManager.main.UpdateRoundText();
     }
-
-    public IEnumerator RoundProgression()
-    {
-        while (true)
-        {
-            if (!EnemyManager.main.AnyEnemiesLeft())
-            {
-                if (_currentRound == 1)
-                {
-                    EndRound1();
-                }
-
-                PlayerManager.main.ModifyCurrency(250);
-
-                IncreaseRound();
-
-                if (_currentRound >= _rounds.Length)
-                {
-                    break;
-                    //EnemyManager.main.StartRound(new Round(_currentRound));
-                }
-                else
-                {
-                    EnemyManager.main.StartRound(_rounds[_currentRound - 1]);
-                }
-            }
-
-            yield return new WaitForSeconds(1);
-        }
-    }
 }
 
 [System.Serializable]
 public struct Round
 {
     public Wave[] waves;
-
-    /*
-    public Round(int roundNum)
+    
+    public Round(string enemyCode)
     {
-        waves = new Wave[Mathf.FloorToInt(Mathf.Sqrt(roundNum)) + 1];
+        string[] waves = enemyCode.Split("\n");
+
+        this.waves = new Wave[waves.Length];
 
         for (int i = 0; i < waves.Length; i++)
         {
-            waves[i].enemyCount = (10 + Random.Range(-5, 6)) / waves.Length;
-            waves[i].time = (9.9f + Random.Range(-2.5f, 2.5f)) / waves.Length;
+            this.waves[i] = new Wave(waves[i].Split(","));
         }
     }
-    */
 }
 
 [System.Serializable]
@@ -133,6 +105,23 @@ public struct Wave
     public int[] enemyAmounts;
 
     public float time;
+
+    public Wave(string[] enemyCount)
+    {
+        enemies = new EnemyBehaviour[EnemyManager.main.EnemyTypes.Length];
+        enemyAmounts = new int[EnemyManager.main.EnemyTypes.Length];
+
+        int time = 0;
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i] = EnemyManager.main.EnemyTypes[i];
+            enemyAmounts[i] = int.Parse(enemyCount[i]);
+            time += int.Parse(enemyCount[i]) / 2;
+        }
+
+        this.time = time;
+    }
 
     public EnemyBehaviour GetRandomEnemy()
     {

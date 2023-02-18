@@ -103,10 +103,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _maxHealth: 5000
-  _damage: 100
+  _damage: 25
   _radius: 12
   _type: 3
-  _attackCooldown: 3
+  _attackCooldown: 4
   _buildingMat: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!65 &2726651816852995823
 BoxCollider:

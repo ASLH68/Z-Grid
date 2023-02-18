@@ -9,8 +9,12 @@ public class EnemyManager : MonoBehaviour
 
     [Header("Enemies")]
     private List<EnemyBehaviour> _enemies;
+    [SerializeField]
+    private EnemyBehaviour[] _enemyTypes;
 
     [SerializeField] private Transform _enemiesParent;
+
+    public EnemyBehaviour[] EnemyTypes => _enemyTypes;
 
     private void Awake()
     {
@@ -94,7 +98,13 @@ public class EnemyManager : MonoBehaviour
                 SpawnEnemy(curWave.GetRandomEnemy());
                 yield return new WaitForSeconds(0.5f + Random.Range(0f, 0.5f));
             }
-            yield return new WaitForSeconds(curWave.time);
+
+            while (AnyEnemiesLeft())
+            {
+                yield return new WaitForSeconds(1);
+            }
+            PlayerManager.main.ModifyCurrency(150);
+            yield return new WaitForSeconds(5);
         }
     }
 

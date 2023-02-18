@@ -90,7 +90,7 @@ public class BuildingBehaviour : MonoBehaviour
                         }
                         break;
                     case AttackType.Healthiest:
-                        if (target == null || target.GetComponent<EnemyBehaviour>().Health > curObj.transform.GetComponent<EnemyBehaviour>().Health)
+                        if (target == null || target.GetComponent<EnemyBehaviour>().Health < curObj.transform.GetComponent<EnemyBehaviour>().Health)
                         {
                             target = curObj.transform;
                         }
