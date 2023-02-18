@@ -30,7 +30,7 @@ namespace Pathfinding
                     Vector3Int nextPos = activeNode.Position + curDir;
 
                     if (!(curDir.x == 0 && curDir.z == 0)
-                        && InBounds(nextPos, mapData))
+                        && MapManager.main.InBounds(nextPos))
                     {
                         //Debug.Log("Checking tile " + nextPos);
 
@@ -117,11 +117,6 @@ namespace Pathfinding
             
             activeNode = optimalNode;
             return activeNode;
-        }
-
-        private static bool InBounds(Vector3Int position, int[,] mapData)
-        {
-            return !(position.x < 0 || position.x >= mapData.GetLength(0) || position.z < 0 || position.z >= mapData.GetLength(1));
         }
     }
 }

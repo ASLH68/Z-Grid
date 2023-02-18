@@ -30,6 +30,8 @@ public class EnemyBehaviour : MonoBehaviour
     private float _pathSightRange;
     [SerializeField]
     private int _intelligence;
+    [SerializeField]
+    private bool _willExplode;
 
     [SerializeField]
     private LayerMask _collisionMask;
@@ -59,6 +61,10 @@ public class EnemyBehaviour : MonoBehaviour
         
         if (MapManager.main.MapData[Mathf.RoundToInt(_movePos.x), Mathf.RoundToInt(_movePos.z)] > 0)
         {
+            if (_willExplode)
+            {
+                Explode();
+            }
             Vector3 travelDir = transform.position + (_movePos - new Vector3(Mathf.RoundToInt(transform.position.x), 0.5f, Mathf.RoundToInt(transform.position.z))).normalized;
 
             BuildingManager.main.DamageBuilding(Mathf.RoundToInt(travelDir.x), Mathf.RoundToInt(travelDir.z), _damage);
@@ -290,5 +296,46 @@ public class EnemyBehaviour : MonoBehaviour
         }
 
         return 0;
+    }
+
+    public void Explode()
+    {
+        for (int x = -Mathf.RoundToInt(_sightRange); x < Mathf.RoundToInt(_sightRange); x++)
+        {
+            for (int y = -Mathf.RoundToInt(_sightRange); y < Mathf.RoundToInt(_sightRange); y++)
+            {
+                Vector3Int avgPos = new Vector3Int(Mathf.RoundToInt(transform.position.x) + x, 0, Mathf.RoundToInt(transform.position.z) + y);
+
+                if (MapManager.main.InBounds(new Vector3Int(avgPos.x, avgPos.z))
+                    && Vector3.Distance(transform.position, new Vector3(avgPos.x, 0.5f, avgPos.z)) <= _sightRange)
+                {
+                    BuildingManager.main.DamageBuilding(avgPos.x, avgPos.z, 5000);
+                }
+            }
+        }
+
+        TakeDamage(_health);
+    }
+
+    public void ApplyChanges(int roundNum)
+    {
+        switch (_health)
+        {
+            case 100:
+                _health *= Mathf.RoundToInt(Mathf.Pow(1.25f, Mathf.Floor(roundNum / 10f)));
+                _damage *= Mathf.RoundToInt(Mathf.Pow(1.25f, Mathf.Floor(roundNum / 10f)));
+                break;
+            case 75:
+                _health *= Mathf.RoundToInt(Mathf.Pow(1.5f, Mathf.Floor(roundNum / 10f)));
+                _damage *= Mathf.RoundToInt(Mathf.Pow(1.5f, Mathf.Floor(roundNum / 10f)));
+                break;
+            case 250:
+                _health *= Mathf.RoundToInt(Mathf.Pow(1.15f, Mathf.Floor(roundNum / 10f)));
+                _damage *= Mathf.RoundToInt(Mathf.Pow(1.15f, Mathf.Floor(roundNum / 10f)));
+                break;
+            case 200:
+                _health *= Mathf.RoundToInt(Mathf.Pow(1.1f, Mathf.Floor(roundNum / 10f)));
+                break;
+        }
     }
 }

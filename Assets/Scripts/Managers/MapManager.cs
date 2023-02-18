@@ -74,4 +74,9 @@ public class MapManager : MonoBehaviour
     {
         return _mapData[x, y];
     }
+
+    public bool InBounds(Vector3Int position)
+    {
+        return !(position.x < 0 || position.x >= _mapData.GetLength(0) || position.z < 0 || position.z >= _mapData.GetLength(1));
+    }
 }

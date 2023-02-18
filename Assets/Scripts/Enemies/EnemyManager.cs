@@ -63,7 +63,11 @@ public class EnemyManager : MonoBehaviour
         transform.position = new Vector3(0, 0.5f, /*13*/Random.Range(0, height));
         if (_enemies != null)
         {
-            _enemies.Add(Instantiate(enemyObj, transform.position, Quaternion.identity));
+            EnemyBehaviour newEnemy = Instantiate(enemyObj, transform.position, Quaternion.identity);
+
+            _enemies.Add(newEnemy);
+
+            newEnemy.ApplyChanges(GameManager.main.CurrentRound);
         }
     }
 
@@ -96,7 +100,7 @@ public class EnemyManager : MonoBehaviour
             while (curWave.EnemyCount() > 0)
             {
                 SpawnEnemy(curWave.GetRandomEnemy());
-                yield return new WaitForSeconds(0.5f + Random.Range(0f, 0.5f));
+                yield return new WaitForSeconds(0.25f);
             }
 
             while (AnyEnemiesLeft())

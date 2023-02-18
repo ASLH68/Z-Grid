@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4694230131064877773}
   - component: {fileID: -2502310071595531072}
   m_Layer: 6
-  m_Name: BossEnemy
+  m_Name: BoomEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f10ba8fefd9d28b4d86b3fa15722da56, type: 2}
+  - {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,18 +100,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _positions: []
   _movePos: {x: 0, y: 0, z: 0}
-  _maxHealth: 10000
-  _moneyAmount: 100
-  _speed: 1
-  _damage: 20
-  _sightRange: 10
-  _pathSightRange: 5
-  _intelligence: 100
+  _maxHealth: 200
+  _moneyAmount: 0
+  _speed: 5
+  _damage: 0
+  _sightRange: 4
+  _pathSightRange: 2
+  _intelligence: 75
+  _willExplode: 1
   _collisionMask:
     serializedVersion: 2
     m_Bits: 128
   _mode: 0
-  _baseMat: {fileID: 2100000, guid: f10ba8fefd9d28b4d86b3fa15722da56, type: 2}
+  _baseMat: {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
   _dmgMat: {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
 --- !u!54 &4694230131064877773
 Rigidbody:
