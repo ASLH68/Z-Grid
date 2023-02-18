@@ -103,7 +103,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _maxHealth: 5000
-  _damage: 10
+  _damage: 20
   _radius: 4
   _type: 1
   _attackCooldown: 1
