@@ -106,27 +106,24 @@ public class BuildingManager : MonoBehaviour
         {
             //Creates the new wall object
             case BuildingType.wall:
-                PlaceBuilding(x, y, _wallObj, _wallCost, _wallWeight);
+                PlaceBuilding(x, y, _wallObj, _wallCost, _wallWeight, "wall");
                 break;
 
             //Creates a new turret obj
             case BuildingType.baseTurret:
-                PlaceBuilding(x, y, _basicTurretObj, _basicTurretCost, _turretWeight);
-                _basicTurretCost = Mathf.FloorToInt(_basicTurretCost * 1.025f);
+                PlaceBuilding(x, y, _basicTurretObj, _basicTurretCost, _turretWeight, "basicTurret");           
                 CanvasManager.main.SetCosts();
                 break;
 
             //Creates a new machine turret
             case BuildingType.machineTurret:
-                PlaceBuilding(x, y, _machineTurretObj, _machineTurretCost, _turretWeight);
-                _machineTurretCost = Mathf.FloorToInt(_machineTurretCost * 1.025f);
+                PlaceBuilding(x, y, _machineTurretObj, _machineTurretCost, _turretWeight, "machineTurret");           
                 CanvasManager.main.SetCosts();
                 break;
 
             //Creates a new sniper turret
             case BuildingType.sniperTurret:
-                PlaceBuilding(x, y, _sniperTurretObj, _sniperTurretCost, _turretWeight);
-                _sniperTurretCost = Mathf.FloorToInt(_sniperTurretCost * 1.025f);
+                PlaceBuilding(x, y, _sniperTurretObj, _sniperTurretCost, _turretWeight, "sniperTurret");      
                 CanvasManager.main.SetCosts();
                 break;
         }
@@ -140,7 +137,7 @@ public class BuildingManager : MonoBehaviour
     /// <param name="buildingToPlace"> building being placed </param>
     /// <param name="cost"> cost of building </param>
     /// <param name="weight"> weight of building </param>
-    private void PlaceBuilding(int x, int y, BuildingBehaviour buildingToPlace, int cost, int weight)
+    private void PlaceBuilding(int x, int y, BuildingBehaviour buildingToPlace, int cost, int weight, string buildingType)
     {
         transform.position = new Vector3(x, 0, y) + _offset;
 
@@ -156,6 +153,19 @@ public class BuildingManager : MonoBehaviour
             EnemyManager.main.UpdatePaths(new Vector3(x, 0.5f, y));
 
             SetRangeVisibility();
+
+            switch(buildingType)
+            {
+                case "basicTurret":
+                    _basicTurretCost = Mathf.FloorToInt(_basicTurretCost * 1.025f);
+                    break;
+                case "machineTurret":
+                    _machineTurretCost = Mathf.FloorToInt(_machineTurretCost * 1.025f);
+                    break;
+                case "sniperTurret":
+                    _sniperTurretCost = Mathf.FloorToInt(_sniperTurretCost * 1.025f);
+                    break;
+            }
         }
     }
 
