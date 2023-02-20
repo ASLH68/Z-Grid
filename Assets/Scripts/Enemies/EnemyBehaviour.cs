@@ -260,7 +260,7 @@ public class EnemyBehaviour : MonoBehaviour
             
         }
         */
-        if (transform.position == _movePos)
+        if (transform.position == _movePos || _movePos == new Vector3(0, 0.5f, 0))
         {
             Vector3 oldPos = _movePos;
             _movePos = _positions[Mathf.Min(IndexOf(_movePos) + 1, _positions.Length - 1)];

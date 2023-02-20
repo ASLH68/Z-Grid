@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour
         int width = MapManager.main.Width;
         int height = MapManager.main.Height;
 
-        transform.position = new Vector3(0, 0.5f, /*13*/Random.Range(0, height));
+        transform.position = new Vector3(0, 0.5f, Random.Range(0, height));
         if (_enemies != null)
         {
             EnemyBehaviour newEnemy = Instantiate(enemyObj, transform.position, Quaternion.identity);
