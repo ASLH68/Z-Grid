@@ -12,23 +12,6 @@ using UnityEngine.SceneManagement;
 
 public class EndGameMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject _winText;
-    [SerializeField] private GameObject _loseText;
-
-    private void Start()
-    {
-        SetWinText();
-    }
-
-    /// <summary>
-    /// Enables win or loss text depending on results of game
-    /// </summary>
-    public void SetWinText()
-    {
-        _winText.SetActive(EndGame.wonGame);
-        _loseText.SetActive(!EndGame.wonGame);
-    }
-
     /// <summary>
     /// Restarts the game
     /// </summary>
