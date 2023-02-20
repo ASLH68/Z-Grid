@@ -106,7 +106,7 @@ MonoBehaviour:
   _damage: 0
   _sightRange: 4
   _pathSightRange: 2
-  _intelligence: 75
+  _intelligence: 0
   _willExplode: 1
   _collisionMask:
     serializedVersion: 2
