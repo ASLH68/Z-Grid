@@ -12,6 +12,9 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private EnemyBehaviour[] _enemyTypes;
 
+    private int _pulseValue = 0;
+    private int _enemyPulseCount = 0;
+
     [SerializeField] private Transform _enemiesParent;
 
     public EnemyBehaviour[] EnemyTypes => _enemyTypes;
@@ -55,12 +58,10 @@ public class EnemyManager : MonoBehaviour
         StartCoroutine(SpawnWaves(round));
     }
 
-    public void SpawnEnemy(EnemyBehaviour enemyObj)
+    public void SpawnEnemy(EnemyBehaviour enemyObj, int pos)
     {
-        int width = MapManager.main.Width;
-        int height = MapManager.main.Height;
+        transform.position = new Vector3(0, 0.5f, pos);
 
-        transform.position = new Vector3(0, 0.5f, Random.Range(0, height));
         if (_enemies != null)
         {
             EnemyBehaviour newEnemy = Instantiate(enemyObj, transform.position, Quaternion.identity);
@@ -95,11 +96,26 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator SpawnWaves(Round round)
     {
+        int width = MapManager.main.Width;
+        int height = MapManager.main.Height;
+
         foreach (Wave curWave in round.waves)
         {
+            int totalEnemies = curWave.EnemyCount();
+            int pulseEnemies = 0;
+            int puleRow = 2 + 5 * Random.Range(0, 4);
+
             while (curWave.EnemyCount() > 0)
             {
-                SpawnEnemy(curWave.GetRandomEnemy());
+                if (pulseEnemies < totalEnemies / 8)
+                {
+                    SpawnEnemy(curWave.GetRandomEnemy(), puleRow + Random.Range(-2, 3));
+                    pulseEnemies++;
+                }
+                else
+                {
+                    SpawnEnemy(curWave.GetRandomEnemy(), Random.Range(0, height));
+                }
                 yield return new WaitForSeconds(0.25f);
             }
 
