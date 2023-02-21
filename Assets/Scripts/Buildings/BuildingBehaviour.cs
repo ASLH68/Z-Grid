@@ -111,7 +111,7 @@ public class BuildingBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (BuildingManager.main._currentBuilding == BuildingManager.BuildingType.destroy)
+        if (Time.timeScale != 0 && BuildingManager.main._currentBuilding == BuildingManager.BuildingType.destroy)
         {
             PlayerManager.main.ModifyCurrency(20);
             BuildingManager.main.DestroyBuilding(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));

@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Round _round;
 
+    private GameObject _lightObj;
+
     public int Health => _health;
     public int CurrentRound { get => _currentRound; set => _currentRound = value; }
 
@@ -50,19 +52,29 @@ public class GameManager : MonoBehaviour
 
         _round = new Round(_enemyCode);
         EnemyManager.main.StartRound(_round);
+
+        _lightObj = FindObjectOfType<Light>().gameObject;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+            _lightObj.SetActive(Time.timeScale != 0);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene("Start");
         }
-        Time.timeScale = Input.GetKey(KeyCode.Space) ? 3 : 1;
+        if (Input.GetKey(KeyCode.Space) && Time.timeScale == 1)
+        {
+            Time.timeScale = 3;
+        }
+        else if (Time.timeScale != 0)
+        {
+            Time.timeScale = 1;
+        }
     }
 
     public void LoseLife(int value)

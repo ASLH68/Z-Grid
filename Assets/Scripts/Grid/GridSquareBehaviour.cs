@@ -18,7 +18,7 @@ public class GridSquareBehaviour : MonoBehaviour
     private void OnMouseDown()
     {
         Vector2Int gridSquarePos = new(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
-        if (gridSquarePos.x >= 3 && !EnemyManager.main.EnemyOn(gridSquarePos.x, gridSquarePos.y))
+        if (Time.timeScale != 0 && gridSquarePos.x >= 3 && !EnemyManager.main.EnemyOn(gridSquarePos.x, gridSquarePos.y))
         {
             BuildingManager.main.CreateBuilding(gridSquarePos.x, gridSquarePos.y);
         }
