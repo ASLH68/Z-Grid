@@ -82,6 +82,21 @@ public class GameManager : MonoBehaviour
     {
         //PlayerManager.main.ModifyCurrency(_currencyAmount);
     }
+
+    /// <summary>
+    /// Increments the round by 1 and loads the end game scene if game is over
+    /// </summary>
+    public void UpdateCurrentRound()
+    {
+        if(CurrentRound == 50)
+        {
+            SceneManager.LoadScene("Game Won");
+        }
+        else
+        {
+            CurrentRound++;
+        }
+    }
 }
 
 [System.Serializable]

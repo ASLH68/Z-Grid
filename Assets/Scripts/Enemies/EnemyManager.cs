@@ -109,8 +109,9 @@ public class EnemyManager : MonoBehaviour
             }
             PlayerManager.main.ModifyCurrency(150);
             yield return new WaitForSeconds(5);
-            
-            GameManager.main.CurrentRound++;
+
+            GameManager.main.UpdateCurrentRound();
+
             CanvasManager.main.UpdateRoundText();
         }
     }
