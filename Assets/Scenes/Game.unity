@@ -1393,6 +1393,7 @@ MonoBehaviour:
   _height: 20
   _gridSquareObj: {fileID: -2391968658557722413, guid: f1f73258e55cb4d458301fe8a0249986, type: 3}
   _mapParent: {fileID: 966597586}
+  _dangerMaterial: {fileID: 2100000, guid: 88f650c7b03eb0d4b9ce3f3d7e781d5f, type: 2}
   _wallPrefab: {fileID: 1972211626219385172, guid: fd98920ea76d89a45972c5e1999cb2fe, type: 3}
   _lvl1Walls: {fileID: 370135730}
   _wallSpawnPointsLvl1: []

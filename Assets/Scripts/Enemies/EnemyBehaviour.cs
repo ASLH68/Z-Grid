@@ -42,6 +42,7 @@ public class EnemyBehaviour : MonoBehaviour
     private Material _baseMat;
     [SerializeField]
     private Material _dmgMat;
+    private bool _hurted = false;
 
     public int Health => _health;
 
@@ -183,9 +184,10 @@ public class EnemyBehaviour : MonoBehaviour
         {
             transform.position = _movePos;
             //UpdatePath();
-            if (transform.position.x == MapManager.main.Width - 1)
+            if (transform.position.x == MapManager.main.Width - 1 && !_hurted)
             {
                 GameManager.main.LoseLife(_damage);
+                _hurted = true;
                 Destroy(gameObject);
             }
         }

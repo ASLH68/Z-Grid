@@ -101,6 +101,8 @@ public class EnemyManager : MonoBehaviour
 
         foreach (Wave curWave in round.waves)
         {
+            yield return new WaitForSeconds(5);
+
             int totalEnemies = curWave.EnemyCount();
             int pulseEnemies = 0;
             int puleRow = 2 + 5 * Random.Range(0, 4);
@@ -124,7 +126,6 @@ public class EnemyManager : MonoBehaviour
                 yield return new WaitForSeconds(1);
             }
             PlayerManager.main.ModifyCurrency(150);
-            yield return new WaitForSeconds(5);
 
             GameManager.main.UpdateCurrentRound();
 

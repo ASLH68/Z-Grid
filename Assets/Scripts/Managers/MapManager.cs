@@ -17,6 +17,8 @@ public class MapManager : MonoBehaviour
     [SerializeField]
     private GridSquareBehaviour _gridSquareObj;
     [SerializeField] private Transform _mapParent;
+    [SerializeField]
+    private Material _dangerMaterial;
 
     [Header("Walls")]
     [SerializeField] private GameObject _wallPrefab;
@@ -59,6 +61,10 @@ public class MapManager : MonoBehaviour
                 newGridSquare.transform.SetParent(_mapParent);
                 newGridSquare.gameObject.transform.name = x + ", " + y;
                 newGridSquare.Init(this);
+                if (x < 3)
+                {
+                    newGridSquare.GetComponent<Renderer>().material = _dangerMaterial;
+                }
 
                 _mapData[x, y] = 0;
             }
