@@ -150,7 +150,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
+  - {fileID: 2100000, guid: 3c5e82a63b1e3a34b8d37f1b238d89ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -198,7 +198,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _mode: 0
-  _baseMat: {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
+  _baseMat: {fileID: 2100000, guid: 3c5e82a63b1e3a34b8d37f1b238d89ef, type: 2}
   _dmgMat: {fileID: 2100000, guid: 3a0d5276c865ee142ae228bef8ba1101, type: 2}
   _warning: {fileID: 8502558001627375425}
 --- !u!54 &4694230131064877773
