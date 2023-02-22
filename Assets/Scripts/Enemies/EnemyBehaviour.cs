@@ -43,6 +43,8 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField]
     private Material _dmgMat;
     private bool _hurted = false;
+    [SerializeField]
+    private GameObject _warning;
 
     public int Health => _health;
 
@@ -52,6 +54,10 @@ public class EnemyBehaviour : MonoBehaviour
         _mode = MoveMode.Passive;
         _health = _maxHealth;
         _rb = GetComponent<Rigidbody>();
+        if (_warning != null)
+        {
+            StartCoroutine(WarningFlash());
+        }
         UpdatePath();
     }
 
@@ -338,6 +344,15 @@ public class EnemyBehaviour : MonoBehaviour
             case 200:
                 _health *= Mathf.RoundToInt(Mathf.Pow(1.1f, Mathf.Floor(roundNum / 10f)));
                 break;
+        }
+    }
+
+    private IEnumerator WarningFlash()
+    {
+        while (true)
+        {
+            _warning.SetActive(!_warning.activeSelf);
+            yield return new WaitForSeconds(0.75f);
         }
     }
 }

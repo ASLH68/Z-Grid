@@ -109,14 +109,16 @@ public class EnemyManager : MonoBehaviour
 
             while (curWave.EnemyCount() > 0)
             {
+                EnemyBehaviour newEnemy = curWave.GetRandomEnemy();
+
                 if (pulseEnemies < totalEnemies / 8)
                 {
-                    SpawnEnemy(curWave.GetRandomEnemy(), puleRow + Random.Range(-2, 3));
+                    SpawnEnemy(newEnemy, puleRow + Random.Range(-2, 3));
                     pulseEnemies++;
                 }
                 else
                 {
-                    SpawnEnemy(curWave.GetRandomEnemy(), Random.Range(0, height));
+                    SpawnEnemy(newEnemy, Random.Range(0, height));
                 }
                 yield return new WaitForSeconds(0.25f);
             }

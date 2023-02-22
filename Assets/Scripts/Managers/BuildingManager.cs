@@ -160,10 +160,10 @@ public class BuildingManager : MonoBehaviour
                     _basicTurretCost = Mathf.FloorToInt(_basicTurretCost * 1.025f);
                     break;
                 case "machineTurret":
-                    _machineTurretCost = Mathf.FloorToInt(_machineTurretCost * 1.025f);
+                    _machineTurretCost = Mathf.FloorToInt(_machineTurretCost * 1.05f);
                     break;
                 case "sniperTurret":
-                    _sniperTurretCost = Mathf.FloorToInt(_sniperTurretCost * 1.025f);
+                    _sniperTurretCost = Mathf.FloorToInt(_sniperTurretCost * 1.075f);
                     break;
             }
         }
